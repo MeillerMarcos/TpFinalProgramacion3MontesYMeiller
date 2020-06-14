@@ -13,11 +13,6 @@ public class Vuelo
     private float costoTotal;
     HashMap<String,Integer> cantidadKm = new HashMap<String,Integer>();
 
-    public Vuelo() {
-    }
-
-    
-    
     public Vuelo(String origen, String destino, String fecha, int cantidadAcompañantes, Avion avion, float costoTotal) 
     {
         this.origen = origen;
@@ -26,6 +21,11 @@ public class Vuelo
         this.cantidadAcompañantes = cantidadAcompañantes;
         this.avion = avion;
         this.costoTotal = costoTotal;
+    }
+    
+    public Vuelo() 
+    {
+        
     }
 
     public String getOrigen() 

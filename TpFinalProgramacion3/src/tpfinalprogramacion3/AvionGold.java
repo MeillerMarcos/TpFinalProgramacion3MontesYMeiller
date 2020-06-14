@@ -7,6 +7,11 @@ public class AvionGold extends Avion implements ServicioDeCatering
         super(costoPorKm, capacidadMaxPasajeros, velocidadMaxima, tipoDePropulsion);
     }
 
+    public String conexionWIFI ()
+    {
+        return "Conectandose a WIFI. . .";
+    }
+    
     @Override
     public String servicioDeCatering() 
     {

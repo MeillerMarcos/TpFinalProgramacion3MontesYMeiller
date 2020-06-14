@@ -1,6 +1,8 @@
 package tpfinalprogramacion3;
 
-public class Usuario 
+import java.io.Serializable;
+
+public class Usuario implements Serializable
 {
     private String nombre;
     private String apellido;
@@ -13,6 +15,11 @@ public class Usuario
         this.apellido = apellido;
         this.edad = edad;
         this.dni = dni;
+    }
+
+    public Usuario () 
+    {
+        
     }
 
     public String getNombre() 

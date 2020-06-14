@@ -1,6 +1,8 @@
 package tpfinalprogramacion3;
 
-public class Avion 
+import java.io.Serializable;
+
+public class Avion implements Serializable
 {
     protected int costoPorKm;
     protected int capacidadMaxPasajeros;
