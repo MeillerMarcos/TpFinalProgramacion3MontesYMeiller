@@ -2,10 +2,10 @@ package tpfinalprogramacion3;
 
 public class Avion 
 {
-    private int costoPorKm;
-    private int capacidadMaxPasajeros;
-    private int velocidadMaxima;
-    private String tipoDePropulsion;
+    protected int costoPorKm;
+    protected int capacidadMaxPasajeros;
+    protected int velocidadMaxima;
+    protected String tipoDePropulsion;
 
     public Avion(int costoPorKm, int capacidadMaxPasajeros, int velocidadMaxima, String tipoDePropulsion) 
     {
