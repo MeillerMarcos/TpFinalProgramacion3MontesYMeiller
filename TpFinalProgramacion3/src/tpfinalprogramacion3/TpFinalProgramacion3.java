@@ -6,5 +6,6 @@ public class TpFinalProgramacion3
     {
         System.out.println("primer commit");
         System.out.println("segundo");
+        System.out.println("tercero");
     } 
 }
