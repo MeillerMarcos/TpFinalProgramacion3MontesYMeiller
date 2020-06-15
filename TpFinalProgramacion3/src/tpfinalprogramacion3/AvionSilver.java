@@ -1,6 +1,6 @@
 package tpfinalprogramacion3;
 
-public class AvionSilver 
+public class AvionSilver extends Avion
 {
     
 }

@@ -1,5 +1,10 @@
 package tpfinalprogramacion3;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 
@@ -131,7 +136,70 @@ public class Vuelo
     
     public void calcularTotal(String key)
     {
-        Integer cantidadDeKm = cantidadKm.get(key);
-        //costoTotal = (cantidadDeKm * avion.getCostoPorKm()) + (cantidadAcompañantes * 3500) +  (Tarifa del tipo de avión); 
+        int cantidadDeKm = cantidadKm.get(key);      
+        costoTotal = (cantidadDeKm * avion.getCostoPorKm()) + (cantidadAcompañantes * 3500) +  avion.tarifaAvion(avion); 
     }
+    
+   
+    
+        public void escribirArchivo (String fileName,Vuelo escribir) 
+    {
+        File file = new File(fileName); 
+        file.delete();
+        FileOutputStream output=null;
+        ObjectOutputStream writer=null;
+        
+        try
+        {
+            if(!file.exists())
+            {
+                file.createNewFile();
+            }
+            
+            output = new FileOutputStream(file, true);
+            writer = new ObjectOutputStream(output);
+
+            writer.writeObject(escribir);
+
+            output.close();
+            writer.close();    
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error dentro de escribirArchivo");   
+        } 
+    }
+    
+    
+    public Vuelo leerArchivo (String fileName,Vuelo recibir) 
+    {  
+        File file = new File(fileName);
+        FileInputStream input=null;
+        ObjectInputStream reader=null;
+        try
+        {
+            if(!file.exists())
+            {
+                file.createNewFile();
+            }
+            else
+            {
+                input = new FileInputStream(file);
+                reader = new ObjectInputStream(input);
+
+                  
+                recibir = (Vuelo)reader.readObject();
+            }
+            input.close();
+            reader.close();    
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error dentro de leerArchivo");        
+        } 
+        
+        return recibir;
+    }
+    
+    
 }

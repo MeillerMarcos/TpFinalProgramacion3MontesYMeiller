@@ -1,5 +1,10 @@
 package tpfinalprogramacion3;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Avion implements Serializable
@@ -55,5 +60,81 @@ public class Avion implements Serializable
     public void setTipoDePropulsion(String tipoDePropulsion) 
     {
         this.tipoDePropulsion = tipoDePropulsion;
-    } 
+    }
+    
+    public int tarifaAvion (Avion tipo){
+        int tarifa=0;
+        if(tipo instanceof AvionGold)
+            tarifa = 6000;
+        if(tipo instanceof AvionSilver)
+            tarifa = 4000;
+        if(tipo instanceof AvionBronze)
+            tarifa = 3000;
+        return tarifa;
+    }
+    
+    
+    
+        public void escribirArchivo (String fileName,Avion escribir) 
+    {
+        File file = new File(fileName); 
+        file.delete();
+        FileOutputStream output=null;
+        ObjectOutputStream writer=null;
+        
+        try
+        {
+            if(!file.exists())
+            {
+                file.createNewFile();
+            }
+            
+            output = new FileOutputStream(file, true);
+            writer = new ObjectOutputStream(output);
+
+            writer.writeObject(escribir);
+
+            output.close();
+            writer.close();    
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error dentro de escribirArchivo");   
+        } 
+    }
+    
+    
+    public Avion leerArchivo (String fileName,Avion recibir) 
+    {  
+        File file = new File(fileName);
+        FileInputStream input=null;
+        ObjectInputStream reader=null;
+        try
+        {
+            if(!file.exists())
+            {
+                file.createNewFile();
+            }
+            else
+            {
+                input = new FileInputStream(file);
+                reader = new ObjectInputStream(input);
+
+                  
+                recibir = (Avion)reader.readObject();
+            }
+            input.close();
+            reader.close();    
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error dentro de leerArchivo");        
+        } 
+        
+        return recibir;
+    }
+    
+    
+    
+    
 }
