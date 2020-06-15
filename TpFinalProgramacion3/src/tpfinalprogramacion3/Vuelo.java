@@ -126,12 +126,12 @@ public class Vuelo
     }
     public void cargaHashmap()
     {
-        cantidadKm.put("BsAs – Cordoba ", 695);
-        cantidadKm.put("BsAs – Santiago  ", 1400);
-        cantidadKm.put("BsAs – Montevideo ", 950);
-        cantidadKm.put("Cordoba - Montevideo ", 1190);
-        cantidadKm.put("Cordoba – Santiago ", 1050);
-        cantidadKm.put("Montevideo – Santiago ", 2100); 
+        cantidadKm.put("BsAs – Cordoba", 695);
+        cantidadKm.put("BsAs – Santiago", 1400);
+        cantidadKm.put("BsAs – Montevideo", 950);
+        cantidadKm.put("Cordoba - Montevideo", 1190);
+        cantidadKm.put("Cordoba – Santiago", 1050);
+        cantidadKm.put("Montevideo – Santiago", 2100); 
     }
     
     public void calcularTotal(String key)
