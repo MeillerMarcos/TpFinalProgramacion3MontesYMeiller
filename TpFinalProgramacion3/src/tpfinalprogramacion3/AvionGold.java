@@ -1,6 +1,8 @@
 package tpfinalprogramacion3;
 
-public class AvionGold extends Avion implements ServicioDeCatering
+import java.io.Serializable;
+
+public class AvionGold extends Avion implements ServicioDeCatering, Serializable
 {
     public AvionGold(int costoPorKm, int capacidadMaxPasajeros, int velocidadMaxima, String tipoDePropulsion) 
     {

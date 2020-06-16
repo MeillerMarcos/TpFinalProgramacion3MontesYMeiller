@@ -1,5 +1,6 @@
 package tpfinalprogramacion3;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TpFinalProgramacion3 
@@ -109,7 +110,13 @@ public class TpFinalProgramacion3
         int mes=0;
         String fechaElegida = new String();
         String vueloElegido = new String();
-        
+        AvionSilver silver1 = new AvionSilver (4,3,2,"silver");
+        AvionGold gold1 = new AvionGold (2,4,6,"gold");
+        AvionBronze bronze1 = new AvionBronze (6,2,7,"bronze");
+        ArrayList <Avion> aviones = new ArrayList<Avion> ();
+        aviones.add(gold1);
+        aviones.add(silver1);
+        aviones.add(bronze1);
         refrescarConsola();
         System.out.println("---Menu contratación de vuelo---");
         System.out.println();
@@ -166,6 +173,26 @@ public class TpFinalProgramacion3
 
         vuelo.setCantidadAcompañantes(cantidad);
         
+        System.out.println();
+        System.out.println("Eliga en que tipo de avion desea viajar");
+        System.out.print("1.Gold");
+        System.out.print("2.Silver");
+        System.out.print("3.Bronze");
+        
+        opcion = scan.nextInt();
+        switch(opcion)
+        {
+            case 1:
+                vuelo.setAvion(gold1);
+                break;
+            case 2:
+                vuelo.setAvion(silver1);
+                break;
+            case 3:
+                vuelo.setAvion(bronze1);
+                break;
+        }
+        
         if(!vuelo.comprobarPasajeros())
         {
             System.out.println("No tenemos aviones disponibles con esa capacidad de pasajeros");
@@ -174,7 +201,7 @@ public class TpFinalProgramacion3
         vuelo.calcularTotal(vueloElegido);
         System.out.println("costo total del vuelo:"+ vuelo.getCostoTotal());
         
-        
+        vuelo.escribirArchivo("vuelo.txt", vuelo);
         
         
         

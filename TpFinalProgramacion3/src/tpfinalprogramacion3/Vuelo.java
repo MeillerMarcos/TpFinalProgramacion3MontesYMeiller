@@ -15,10 +15,10 @@ public class Vuelo
     private String fecha;
     private int cantidadAcompañantes;
     private Avion avion;
-    private float costoTotal;
+    private int costoTotal;
     HashMap<String,Integer> cantidadKm = new HashMap<String,Integer>();
 
-    public Vuelo(String origen, String destino, String fecha, int cantidadAcompañantes, Avion avion, float costoTotal) 
+    public Vuelo(String origen, String destino, String fecha, int cantidadAcompañantes, Avion avion, int costoTotal) 
     {
         this.origen = origen;
         this.destino = destino;
@@ -58,7 +58,7 @@ public class Vuelo
         return avion;
     }
 
-    public float getCostoTotal() 
+    public int getCostoTotal() 
     {
         return costoTotal;
     }
@@ -88,7 +88,7 @@ public class Vuelo
         this.avion = avion;
     }
 
-    public void setCostoTotal(float costoTotal) 
+    public void setCostoTotal(int costoTotal) 
     {
         this.costoTotal = costoTotal;
     }
@@ -136,7 +136,8 @@ public class Vuelo
     
     public void calcularTotal(String key)
     {
-        int cantidadDeKm = cantidadKm.get(key);      
+        int cantidadDeKm = cantidadKm.get(key);
+        System.out.println(cantidadDeKm);
         costoTotal = (cantidadDeKm * avion.getCostoPorKm()) + (cantidadAcompañantes * 3500) +  avion.tarifaAvion(avion); 
     }
     

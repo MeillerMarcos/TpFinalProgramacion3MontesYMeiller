@@ -1,6 +1,8 @@
 package tpfinalprogramacion3;
 
-public class AvionSilver extends Avion
+import java.io.Serializable;
+
+public class AvionSilver extends Avion implements Serializable
 {
     public AvionSilver(int costoPorKm, int capacidadMaxPasajeros, int velocidadMaxima, String tipoDePropulsion) 
     {
