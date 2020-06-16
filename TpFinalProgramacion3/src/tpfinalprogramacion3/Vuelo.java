@@ -7,40 +7,23 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
-
 public class Vuelo
 {
-    private String origen;
-    private String destino;
+    private String origenDestino;
     private String fecha;
     private int cantidadAcompañantes;
     private Avion avion;
     private float costoTotal;
-    HashMap<String,Integer> cantidadKm = new HashMap<String,Integer>();
-
-    public Vuelo(String origen, String destino, String fecha, int cantidadAcompañantes, Avion avion, float costoTotal) 
-    {
-        this.origen = origen;
-        this.destino = destino;
-        this.fecha = fecha;
-        this.cantidadAcompañantes = cantidadAcompañantes;
-        this.avion = avion;
-        this.costoTotal = costoTotal;
-    }
+    HashMap<String, Integer> distanciasOrigenDestino = new HashMap<String, Integer>();
     
     public Vuelo() 
     {
-        
+        this.cargaHashmap();
     }
 
-    public String getOrigen() 
+    public String getOrigenDestino() 
     {
-        return origen;
-    }
-
-    public String getDestino() 
-    {
-        return destino;
+        return origenDestino;
     }
 
     public String getFecha() 
@@ -63,16 +46,16 @@ public class Vuelo
         return costoTotal;
     }
 
-    public void setOrigen(String origen) 
+    public HashMap<String, Integer> getDistanciasOrigenDestino() 
     {
-        this.origen = origen;
+        return distanciasOrigenDestino;
     }
-
-    public void setDestino(String destino) 
+    
+    public void setOrigenDestino(String origen) 
     {
-        this.destino = destino;
+        this.origenDestino = origen;
     }
-
+    
     public void setFecha(String fecha) 
     {
         this.fecha = fecha;
@@ -91,6 +74,11 @@ public class Vuelo
     public void setCostoTotal(float costoTotal) 
     {
         this.costoTotal = costoTotal;
+    }
+
+    public void setDistanciasOrigenDestino(HashMap<String, Integer> distanciasOrigenDestino) 
+    {
+        this.distanciasOrigenDestino = distanciasOrigenDestino;
     }
     
     public boolean comprobarOrigenDestino (String origen, String destino)
@@ -124,25 +112,24 @@ public class Vuelo
         
         return flag;
     }
+    
     public void cargaHashmap()
     {
-        cantidadKm.put("BsAs – Cordoba", 695);
-        cantidadKm.put("BsAs – Santiago", 1400);
-        cantidadKm.put("BsAs – Montevideo", 950);
-        cantidadKm.put("Cordoba - Montevideo", 1190);
-        cantidadKm.put("Cordoba – Santiago", 1050);
-        cantidadKm.put("Montevideo – Santiago", 2100); 
+        distanciasOrigenDestino.put("BsAs – Cordoba", 695);
+        distanciasOrigenDestino.put("BsAs – Santiago", 1400);
+        distanciasOrigenDestino.put("BsAs – Montevideo", 950);
+        distanciasOrigenDestino.put("Cordoba - Montevideo", 1190);
+        distanciasOrigenDestino.put("Cordoba – Santiago", 1050);
+        distanciasOrigenDestino.put("Montevideo – Santiago", 2100); 
     }
     
     public void calcularTotal(String key)
     {
-        int cantidadDeKm = cantidadKm.get(key);      
+        int cantidadDeKm = distanciasOrigenDestino.get(key);
         costoTotal = (cantidadDeKm * avion.getCostoPorKm()) + (cantidadAcompañantes * 3500) +  avion.tarifaAvion(avion); 
     }
     
-   
-    
-        public void escribirArchivo (String fileName,Vuelo escribir) 
+    public void escribirArchivo (String fileName,Vuelo vuelo) 
     {
         File file = new File(fileName); 
         file.delete();
@@ -159,7 +146,7 @@ public class Vuelo
             output = new FileOutputStream(file, true);
             writer = new ObjectOutputStream(output);
 
-            writer.writeObject(escribir);
+            writer.writeObject(vuelo);
 
             output.close();
             writer.close();    
@@ -169,7 +156,6 @@ public class Vuelo
             System.out.println("Error dentro de escribirArchivo");   
         } 
     }
-    
     
     public Vuelo leerArchivo (String fileName,Vuelo recibir) 
     {  
@@ -199,7 +185,5 @@ public class Vuelo
         } 
         
         return recibir;
-    }
-    
-    
+    }  
 }

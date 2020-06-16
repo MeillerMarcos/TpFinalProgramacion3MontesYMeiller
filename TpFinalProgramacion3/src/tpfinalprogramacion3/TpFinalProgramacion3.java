@@ -1,5 +1,6 @@
 package tpfinalprogramacion3;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TpFinalProgramacion3 
@@ -32,12 +33,12 @@ public class TpFinalProgramacion3
     public static void asteriscosDeEspera ()
     {
         sleepMs(350);
-        System.out.println("*");
+        System.out.print(".");
         sleepMs(350);
-        System.out.println("*");
+        System.out.print("  .");
         sleepMs(350);
-        System.out.println("*");
-        sleepMs(400);
+        System.out.print("    .");
+        sleepMs(700);
     }
     
     public static void mensajeOpcionInvalida () 
@@ -101,21 +102,25 @@ public class TpFinalProgramacion3
     
     public static void menuVuelo ()
     {
-        Vuelo vuelo = new Vuelo();
         Scanner scan = new Scanner(System.in);
-        int cantidad=0;
+        Vuelo vuelo = new Vuelo();
         int opcion=0;
-        int anio=0;
-        int mes=0;
+        int cantidadElegida=0;
         String fechaElegida = new String();
         String vueloElegido = new String();
+        AvionGold avionGold = new AvionGold (300,50,1020,"Gold");
+        AvionSilver avionSilver = new AvionSilver (230,40,950,"Silver");
+        AvionBronze avionBronze = new AvionBronze (150,30,950,"Bronze");
+        ArrayList <Avion> aviones = new ArrayList<Avion>();
+        aviones.add(avionGold);
+        aviones.add(avionSilver);
+        aviones.add(avionBronze);
         
         refrescarConsola();
-        System.out.println("---Menu contratación de vuelo---");
-        System.out.println();
         System.out.println("Ingrese la fecha del vuelo: ");
         fechaElegida = ingresarFecha();
-        System.out.println("Fecha elegida: "+fechaElegida);
+        vuelo.setFecha(fechaElegida);
+        System.out.print("Fecha elegida del vuelo: "+fechaElegida+".");
         asteriscosDeEspera();
         
         refrescarConsola();
@@ -128,8 +133,6 @@ public class TpFinalProgramacion3
         {
             mensajeOpcionInvalida();
             refrescarConsola();
-            System.out.println("---Menu contratación de vuelo---");
-            System.out.println();
             mostrarOpcionesOrigenYDestino(); 
             System.out.println();
             System.out.println("Opcion: ");
@@ -157,29 +160,95 @@ public class TpFinalProgramacion3
                 vueloElegido = "Montevideo – Santiago";
                 break;
         }
+        vuelo.setOrigenDestino(vueloElegido);
+        System.out.println();
+        System.out.print("Usted ha elegido: '"+vueloElegido+"'");
+        asteriscosDeEspera();
         
-        System.out.println();
-        System.out.println("Usted ha elegido: '"+vueloElegido+"'");
-        System.out.println();
+        refrescarConsola();
         System.out.println("Eliga la cantidad de acompañantes: ");
-        cantidad = scan.nextInt();
-
-        vuelo.setCantidadAcompañantes(cantidad);
+        cantidadElegida = scan.nextInt();
+        vuelo.setCantidadAcompañantes(cantidadElegida);
+        System.out.println();
         
-        if(!vuelo.comprobarPasajeros())
+        if(cantidadElegida==0)
         {
-            System.out.println("No tenemos aviones disponibles con esa capacidad de pasajeros");
+            System.out.print("Usted viaja solo.");
         }
-            
+        if(cantidadElegida>1)
+        {
+            System.out.print("Usted viaja con "+cantidadElegida+" personas.");
+        }
+        if(cantidadElegida==1)
+        {
+            System.out.print("Usted viaja con una persona.");
+        }
+        asteriscosDeEspera();
+        
+        refrescarConsola();
+        System.out.println("Eliga en que tipo de avion desea viajar: ");
+        System.out.println("1.Gold");
+        System.out.println("2.Silver");
+        System.out.println("3.Bronze");
+        opcion = scan.nextInt();
+   
+        switch(opcion)
+        {
+            case 1:
+                vuelo.setAvion(avionGold);
+                break;
+            case 2:
+                vuelo.setAvion(avionSilver);
+                break;
+            case 3:
+                vuelo.setAvion(avionBronze);
+                break;
+        }
+        
+        while(!vuelo.comprobarPasajeros())
+        {
+            System.out.println();
+            System.out.println("No tenemos aviones disponibles con esa capacidad de pasajeros.");
+            //System.out.print("El avion "+vuelo.getAvion()+"no dispone la cantidad de pasajeros elegida. Ingrese nuevamente");
+            asteriscosDeEspera();
+            refrescarConsola();
+            System.out.println("Eliga en que tipo de avion desea viajar: ");
+            System.out.println("1.Gold");
+            System.out.println("2.Silver");
+            System.out.println("3.Bronze");
+            opcion = scan.nextInt();
+
+            switch(opcion)
+            {
+                case 1:
+                    vuelo.setAvion(avionGold);
+                    break;
+                case 2:
+                    vuelo.setAvion(avionSilver);
+                    break;
+                case 3:
+                    vuelo.setAvion(avionBronze);
+                    break;
+            }
+        }
+        
         vuelo.calcularTotal(vueloElegido);
-        System.out.println("costo total del vuelo:"+ vuelo.getCostoTotal());
+        refrescarConsola();
+        System.out.println("El costo total de su vuelo es de $"+vuelo.getCostoTotal()+".");
+        System.out.println("¿Confirmar vuelo?.");
+        System.out.println("1. Si");
+        System.out.println("2. No");
+        opcion = scan.nextInt();
         
-        
-        
-        
-        
-        System.out.println("mensaje final, vuelve a menu principal");
-        menuPrincipal();
+        switch(opcion)
+        {
+            case 1:
+                vuelo.escribirArchivo("vuelo.txt", vuelo);
+                break;
+            case 2:
+                menuPrincipal();
+                break;
+        }
     }
     
     public static void menuUsuarios ()
@@ -314,7 +383,7 @@ public class TpFinalProgramacion3
 
         System.out.println("\nFecha de vuelo:__/__/__");
         System.out.println("\nIngrese el anio: ");
-        System.out.println("Ingrese '0' para cancelar la operacion");
+        System.out.println("Ingrese '0' para cancelar la operacion.");
         anio = scan.nextInt();
         
         if(anio==0)
@@ -331,7 +400,7 @@ public class TpFinalProgramacion3
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/__/__");
             System.out.println("\nIngrese el anio: ");
-            System.out.println("Ingrese '0' para cancelar la operacion"); 
+            System.out.println("Ingrese '0' para cancelar la operacion."); 
             anio = scan.nextInt();
             
             if(anio==0)
@@ -343,7 +412,7 @@ public class TpFinalProgramacion3
 
         System.out.println("\nFecha de vuelo:__/__/"+anio);
         System.out.println("\nIngrese el mes: ");
-        System.out.println("Ingrese '0' para cancelar la operacion");
+        System.out.println("Ingrese '0' para cancelar la operacion.");
         mes = scan.nextInt();
         
         if(mes==0)
@@ -360,7 +429,7 @@ public class TpFinalProgramacion3
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/__/"+anio);
             System.out.println("\nIngrese el mes: ");
-            System.out.println("Ingrese '0' para cancelar la operacion");
+            System.out.println("Ingrese '0' para cancelar la operacion.");
             mes = scan.nextInt();
             
             if(mes==0)
@@ -412,7 +481,7 @@ public class TpFinalProgramacion3
 
         System.out.println("\nFecha de vuelo:__/"+mes+"/"+anio+"/");
         System.out.println("\nIngrese el dia: ");
-        System.out.println("Ingrese '0' para cancelar la operacion");
+        System.out.println("Ingrese '0' para cancelar la operacion.");
         dia = scan.nextInt(); 
         
         if(dia==0)
@@ -424,12 +493,12 @@ public class TpFinalProgramacion3
         {
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/"+mes+"/"+anio+"/");
-            System.out.println("\nEl dia puede variar de 1 a %d."+limiteDia);
+            System.out.println("\nEl dia puede variar de 1 a "+limiteDia+".");
             asteriscosDeEspera();
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/"+mes+"/"+anio+"/");
             System.out.println("\nIngrese el dia: ");
-            System.out.println("Ingrese '0' para cancelar la operacion");
+            System.out.println("Ingrese '0' para cancelar la operacion.");
             
             dia = scan.nextInt();
             
@@ -438,8 +507,6 @@ public class TpFinalProgramacion3
                 menuPrincipal();
             }
         }
-
-        System.out.println("\nFecha valida de vuelo:"+dia+"/"+mes+"/"+anio+"/");
 
         fecha = dia+"/"+mes+"/"+anio+"/";
         
