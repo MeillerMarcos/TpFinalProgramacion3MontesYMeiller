@@ -1,13 +1,10 @@
 package tpfinalprogramacion3;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import com.google.gson.Gson;
+import java.io.*;
 import java.util.HashMap;
 
-public class Vuelo
+public class Vuelo implements Serializable
 {
     private String origenDestino;
     private String fecha;
@@ -20,7 +17,7 @@ public class Vuelo
     {
         this.cargaHashmap();
     }
-
+    
     public String getOrigenDestino() 
     {
         return origenDestino;
@@ -186,4 +183,38 @@ public class Vuelo
         
         return recibir;
     }  
+    
+    public void escribirArchivoGSon (String archivo, Vuelo vuelo)
+    {
+        try
+        {
+            File file = new File(archivo);
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+            vuelo = new Vuelo();
+            Gson gson = new Gson();
+            gson.toJson(vuelo, Vuelo.class, bufferedWriter);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e); 
+        }  
+    }
+    
+    public Vuelo leerArchivoGSon (String archivo, Vuelo vuelo)
+    {
+        try
+        {
+            File file = new File(archivo);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            Gson gson = new Gson();
+            vuelo = gson.fromJson(bufferedReader, Vuelo.class);
+            System.out.println(vuelo);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e); 
+        } 
+        
+        return vuelo;
+    }
 }

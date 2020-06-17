@@ -109,12 +109,19 @@ public class TpFinalProgramacion3
         String fechaElegida = new String();
         String vueloElegido = new String();
         AvionGold avionGold = new AvionGold (300,50,1020,"Gold");
+        AvionGold avionGold2 = new AvionGold (300,50,1020,"Gold");
         AvionSilver avionSilver = new AvionSilver (230,40,950,"Silver");
         AvionBronze avionBronze = new AvionBronze (150,30,950,"Bronze");
+        AvionBronze avionBronze2 = new AvionBronze (150,30,950,"Bronze");
+        AvionBronze avionBronze3 = new AvionBronze (150,30,950,"Bronze");
         ArrayList <Avion> aviones = new ArrayList<Avion>();
+        ArrayGenerico<Avion> listaDeAviones = new ArrayGenerico<Avion>(aviones);
         aviones.add(avionGold);
+        aviones.add(avionGold2);
         aviones.add(avionSilver);
         aviones.add(avionBronze);
+        aviones.add(avionBronze2);
+        aviones.add(avionBronze3);
         
         refrescarConsola();
         System.out.println("Ingrese la fecha del vuelo: ");
@@ -195,13 +202,13 @@ public class TpFinalProgramacion3
         switch(opcion)
         {
             case 1:
-                vuelo.setAvion(avionGold);
+                listaDeAviones.BuscarDentroDeLista(avionGold);
                 break;
             case 2:
-                vuelo.setAvion(avionSilver);
+                
                 break;
             case 3:
-                vuelo.setAvion(avionBronze);
+                
                 break;
         }
         
