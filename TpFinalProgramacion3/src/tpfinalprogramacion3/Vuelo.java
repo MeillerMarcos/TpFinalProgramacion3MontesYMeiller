@@ -110,6 +110,19 @@ public class Vuelo implements Serializable
         return flag;
     }
     
+        public boolean controlarFecha (Avion avion,String fecha)
+    {
+        boolean flag = false;
+        if(this.fecha == fecha)
+        {
+         flag = true;   
+        }
+        
+        return flag;
+        
+    }
+    
+    
     public void cargaHashmap()
     {
         distanciasOrigenDestino.put("BsAs – Cordoba", 695);

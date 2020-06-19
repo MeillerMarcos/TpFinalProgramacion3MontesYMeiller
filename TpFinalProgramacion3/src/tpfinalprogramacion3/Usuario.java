@@ -6,15 +6,16 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Usuario implements Serializable
 {
     private String nombre;
     private String apellido;
     private int edad;
-    private int dni;
-
-    public Usuario(String nombre, String apellido, int edad, int dni) 
+    private String dni;
+    private ArrayList <Usuario> listaUsuario = new ArrayList<Usuario>();  
+    public Usuario(String nombre, String apellido, int edad, String dni) 
     {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -32,6 +33,10 @@ public class Usuario implements Serializable
         return nombre;
     }
 
+    public ArrayList<Usuario> getListaUsuario() {
+        return listaUsuario;
+    }
+
     public String getApellido() 
     {
         return apellido;
@@ -42,7 +47,7 @@ public class Usuario implements Serializable
         return edad;
     }
 
-    public int getDni() 
+    public String getDni() 
     {
         return dni;
     }
@@ -50,6 +55,10 @@ public class Usuario implements Serializable
     public void setNombre(String nombre) 
     {
         this.nombre = nombre;
+    }
+
+    public void setListaUsuario(ArrayList<Usuario> listaUsuario) {
+        this.listaUsuario = listaUsuario;
     }
 
     public void setApellido(String apellido) 
@@ -62,12 +71,12 @@ public class Usuario implements Serializable
         this.edad = edad;
     }
 
-    public void setDni(int dni) 
+    public void setDni(String dni) 
     {
         this.dni = dni;
     }
     
-        public void escribirArchivo (String fileName,Usuario escribir) 
+        public void escribirArchivo (String fileName,ArrayList<Usuario> escribir) 
     {
         File file = new File(fileName); 
         file.delete();
@@ -96,8 +105,9 @@ public class Usuario implements Serializable
     }
     
     
-    public Usuario leerArchivo (String fileName,Usuario recibir) 
+    public ArrayList<Usuario> leerArchivo (String fileName) 
     {  
+        ArrayList<Usuario> recibir = new ArrayList<Usuario>();
         File file = new File(fileName);
         FileInputStream input=null;
         ObjectInputStream reader=null;
@@ -113,7 +123,7 @@ public class Usuario implements Serializable
                 reader = new ObjectInputStream(input);
 
                   
-                recibir = (Usuario)reader.readObject();
+                recibir = (ArrayList<Usuario>)reader.readObject();
             }
             input.close();
             reader.close();    
@@ -124,6 +134,11 @@ public class Usuario implements Serializable
         } 
         
         return recibir;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "nombre=" + nombre + ", apellido=" + apellido + ", edad=" + edad + ", dni=" + dni + '}';
     }
     
     

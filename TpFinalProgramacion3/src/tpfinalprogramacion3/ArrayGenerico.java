@@ -96,8 +96,9 @@ public class ArrayGenerico<E>
         } 
     }
     
-    public ArrayList<E> leerArchivo (String fileName, ArrayList<E> recibir) //lee los datos de el archivo indicado
+    public ArrayList<E> leerArchivo (String fileName) //lee los datos de el archivo indicado
     {  
+        ArrayList<E> recibir = new ArrayList<E>();
         File file = new File(fileName);
         FileInputStream input=null;
         ObjectInputStream reader=null;

@@ -5,6 +5,9 @@ import java.util.Scanner;
 
 public class TpFinalProgramacion3 
 {
+    private static ArrayList <Vuelo> vuelos = new ArrayList<Vuelo>();
+    private static ArrayGenerico<Vuelo> listaVuelos = new ArrayGenerico<Vuelo>(vuelos);
+    
     public static void main(String[] args) 
     {
         menuPrincipal();
@@ -49,9 +52,11 @@ public class TpFinalProgramacion3
 
     public static void menuPrincipal ()
     {
+        listaVuelos.setList(listaVuelos.leerArchivo("vuelos.txt"));
         int opcion=0;
+        int i = 0;
         Scanner scan = new Scanner(System.in);
-        
+        Avion avion;
         refrescarConsola();
         System.out.println("------Menu principal------");
         System.out.println();
@@ -79,7 +84,12 @@ public class TpFinalProgramacion3
                 break;
             case 3:
                 refrescarConsola();
-                System.out.println("No funcional");
+                for(i=0;i<listaVuelos.getList().size();i++)
+                {
+                    System.out.println(listaVuelos.getList().get(i).getFecha() + ":" + listaVuelos.getList().get(i).getAvion());
+                }
+                System.out.println("presione para continuar...");
+                scan.next();
                 asteriscosDeEspera();
                 menuPrincipal();
                 break;
@@ -102,10 +112,12 @@ public class TpFinalProgramacion3
     
     public static void menuVuelo ()
     {
+        listaVuelos.setList(listaVuelos.leerArchivo("vuelos.txt"));
         Scanner scan = new Scanner(System.in);
         Vuelo vuelo = new Vuelo();
         int opcion=0;
         int cantidadElegida=0;
+        int i = 0;
         String fechaElegida = new String();
         String vueloElegido = new String();
         AvionGold avionGold = new AvionGold (300,50,1020,"Gold");
@@ -172,6 +184,7 @@ public class TpFinalProgramacion3
         System.out.print("Usted ha elegido: '"+vueloElegido+"'");
         asteriscosDeEspera();
         
+        
         refrescarConsola();
         System.out.println("Eliga la cantidad de acompañantes: ");
         cantidadElegida = scan.nextInt();
@@ -193,6 +206,9 @@ public class TpFinalProgramacion3
         asteriscosDeEspera();
         
         refrescarConsola();
+        
+        
+        
         System.out.println("Eliga en que tipo de avion desea viajar: ");
         System.out.println("1.Gold");
         System.out.println("2.Silver");
@@ -202,15 +218,48 @@ public class TpFinalProgramacion3
         switch(opcion)
         {
             case 1:
-                listaDeAviones.BuscarDentroDeLista(avionGold);
+               while(i!= -1 && i < listaDeAviones.getList().size())
+               {
+               if(listaDeAviones.getList().get(i) instanceof AvionGold){
+                   vuelo.setAvion(listaDeAviones.getList().get(i));
+                   listaDeAviones.eliminar(i);
+                   i = -1;
+               }
+               else
+                   i++;
+               }
                 break;
             case 2:
-                
+               while(i!= -1 && i < listaDeAviones.getList().size())
+              {
+               if(listaDeAviones.getList().get(i) instanceof AvionSilver){
+                   vuelo.setAvion(listaDeAviones.getList().get(i));
+                   listaDeAviones.eliminar(i);
+                   i = -1;
+               }
+               else
+                   i++;
+               } 
                 break;
             case 3:
-                
+               while(i!= -1 && i < listaDeAviones.getList().size())
+               {
+               if(listaDeAviones.getList().get(i) instanceof AvionBronze){
+                   vuelo.setAvion(listaDeAviones.getList().get(i));
+                   listaDeAviones.eliminar(i);
+                   i = -1;
+               }
+               else
+                   i++;
                 break;
-        }
+               }
+       }
+        if(i > listaDeAviones.getList().size())
+            System.out.println("no tenemos ese tipo de avion disponible actualmente");
+        
+        vuelo.controlarFecha(vuelo.getAvion(), fechaElegida);
+            
+        
         
         while(!vuelo.comprobarPasajeros())
         {
@@ -239,14 +288,17 @@ public class TpFinalProgramacion3
             }
         }
         
+        
+        
         vuelo.calcularTotal(vueloElegido);
         refrescarConsola();
         System.out.println("El costo total de su vuelo es de $"+vuelo.getCostoTotal()+".");
         System.out.println("¿Confirmar vuelo?.");
         System.out.println("1. Si");
         System.out.println("2. No");
-        opcion = scan.nextInt();
-        
+        opcion = scan.nextInt(); 
+        listaVuelos.getList().add(vuelo);
+        listaVuelos.escribirArchivo("vuelos.txt",listaVuelos.getList());
         switch(opcion)
         {
             case 1:
@@ -261,13 +313,15 @@ public class TpFinalProgramacion3
     public static void menuUsuarios ()
     {
         Scanner scan = new Scanner(System.in);
+         
         Usuario usuario = new Usuario();
         String nombre = new String();
         String apellido = new String();
         int dni=0;
         int edad=0;
         int opcion=0;
-        
+        int i = 0;
+        usuario.setListaUsuario(usuario.leerArchivo("usuarios.txt"));
         refrescarConsola();
         System.out.println("------Menu de usuarios------");
         System.out.println();
@@ -288,17 +342,24 @@ public class TpFinalProgramacion3
             case 1:
                 refrescarConsola();
                 System.out.println("Ingrese su nombre: ");
-                nombre = scan.next();
+                usuario.setNombre(scan.next());
                 System.out.println("Ingrese su apellido: ");
-                apellido = scan.next();
+                usuario.setApellido(scan.next());
                 System.out.println("Ingrese su DNI: ");
-                dni = scan.nextInt();
+                usuario.setDni(scan.next());
                 System.out.println("Ingrese su edad: ");
-                edad = scan.nextInt();
+                usuario.setEdad(scan.nextInt());
+                usuario.getListaUsuario().add(usuario);
+                usuario.escribirArchivo("usuarios.txt", usuario.getListaUsuario());         
                 break;
             case 2:
                 refrescarConsola();
-                System.out.println("No funcional");
+                usuario.setListaUsuario(usuario.leerArchivo("usuarios.txt"));
+                for(i=0;i<usuario.getListaUsuario().size();i++){
+                    System.out.println(usuario.getListaUsuario().get(i).toString());
+                }
+                System.out.println("presione para continuar...");
+                scan.next();
                 asteriscosDeEspera();
                 menuPrincipal();
                 break;
@@ -367,7 +428,7 @@ public class TpFinalProgramacion3
             refrescarConsola();
             System.out.println("\nEl mes solo puede variar del 1 al 12.");
             System.out.println("Ingrese '0' para cancelar");
-            System.out.println("\n\nIngrese el mes del 1 al 12: ");
+            System.out.println("\n\nIngrese el mes del 1 aFFFFFFl 12: ");
             mes = scan.nextInt();
 
             if(mes==0)

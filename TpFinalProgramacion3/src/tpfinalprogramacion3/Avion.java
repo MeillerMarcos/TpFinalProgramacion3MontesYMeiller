@@ -73,7 +73,7 @@ public class Avion implements Serializable
         return tarifa;
     }
     
-    
+
     
         public void escribirArchivo (String fileName,Avion escribir) 
     {
