@@ -2,9 +2,10 @@ package tpfinalprogramacion3;
 
 import com.google.gson.Gson;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Vuelo implements Serializable
+public class Vuelo<T, K> implements Serializable
 {
     private String origenDestino;
     private String fecha;
@@ -12,6 +13,7 @@ public class Vuelo implements Serializable
     private Avion avion;
     private float costoTotal;
     HashMap<String, Integer> distanciasOrigenDestino = new HashMap<String, Integer>();
+    ArrayList<T> listaVuelos = new ArrayList<T>();
     
     public Vuelo() 
     {
@@ -97,7 +99,8 @@ public class Vuelo implements Serializable
     public boolean comprobarPasajeros ()
     {
         boolean flag;
-        
+        System.out.println(avion.getCapacidadMaxPasajeros());
+        System.out.println(cantidadAcompañantes);
         if(cantidadAcompañantes > avion.getCapacidadMaxPasajeros())
         {
             flag = false;      
@@ -110,18 +113,18 @@ public class Vuelo implements Serializable
         return flag;
     }
     
-        public boolean controlarFecha (Avion avion,String fecha)
-    {
-        boolean flag = false;
-        if(this.fecha == fecha)
+    public boolean controlarFecha (Avion avion,String fecha)
         {
-         flag = true;   
+            boolean flag = false;
+
+            if(this.fecha.equals(fecha))
+            {
+
+                flag = true;
+            }
+
+            return flag; 
         }
-        
-        return flag;
-        
-    }
-    
     
     public void cargaHashmap()
     {
@@ -172,6 +175,7 @@ public class Vuelo implements Serializable
         File file = new File(fileName);
         FileInputStream input=null;
         ObjectInputStream reader=null;
+        
         try
         {
             if(!file.exists())
@@ -182,8 +186,6 @@ public class Vuelo implements Serializable
             {
                 input = new FileInputStream(file);
                 reader = new ObjectInputStream(input);
-
-                  
                 recibir = (Vuelo)reader.readObject();
             }
             input.close();

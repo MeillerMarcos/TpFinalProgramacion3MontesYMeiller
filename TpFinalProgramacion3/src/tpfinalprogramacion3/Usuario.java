@@ -1,11 +1,6 @@
 package tpfinalprogramacion3;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Usuario implements Serializable
@@ -33,7 +28,8 @@ public class Usuario implements Serializable
         return nombre;
     }
 
-    public ArrayList<Usuario> getListaUsuario() {
+    public ArrayList<Usuario> getListaUsuario() 
+    {
         return listaUsuario;
     }
 
@@ -57,7 +53,8 @@ public class Usuario implements Serializable
         this.nombre = nombre;
     }
 
-    public void setListaUsuario(ArrayList<Usuario> listaUsuario) {
+    public void setListaUsuario(ArrayList<Usuario> listaUsuario) 
+    {
         this.listaUsuario = listaUsuario;
     }
 
@@ -76,7 +73,7 @@ public class Usuario implements Serializable
         this.dni = dni;
     }
     
-        public void escribirArchivo (String fileName,ArrayList<Usuario> escribir) 
+    public void escribirArchivo (String fileName,ArrayList<Usuario> escribir) 
     {
         File file = new File(fileName); 
         file.delete();
@@ -104,13 +101,13 @@ public class Usuario implements Serializable
         } 
     }
     
-    
     public ArrayList<Usuario> leerArchivo (String fileName) 
     {  
         ArrayList<Usuario> recibir = new ArrayList<Usuario>();
         File file = new File(fileName);
         FileInputStream input=null;
         ObjectInputStream reader=null;
+        
         try
         {
             if(!file.exists())
@@ -121,8 +118,6 @@ public class Usuario implements Serializable
             {
                 input = new FileInputStream(file);
                 reader = new ObjectInputStream(input);
-
-                  
                 recibir = (ArrayList<Usuario>)reader.readObject();
             }
             input.close();
@@ -137,7 +132,8 @@ public class Usuario implements Serializable
     }
 
     @Override
-    public String toString() {
+    public String toString() 
+    {
         return "Usuario{" + "nombre=" + nombre + ", apellido=" + apellido + ", edad=" + edad + ", dni=" + dni + '}';
     }
     

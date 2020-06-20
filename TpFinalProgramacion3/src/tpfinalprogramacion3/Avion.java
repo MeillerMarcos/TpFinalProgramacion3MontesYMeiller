@@ -1,11 +1,6 @@
 package tpfinalprogramacion3;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 
 public class Avion implements Serializable
 {
@@ -73,9 +68,7 @@ public class Avion implements Serializable
         return tarifa;
     }
     
-
-    
-        public void escribirArchivo (String fileName,Avion escribir) 
+    public void escribirArchivo (String fileName,Avion escribir) 
     {
         File file = new File(fileName); 
         file.delete();
@@ -91,7 +84,7 @@ public class Avion implements Serializable
             
             output = new FileOutputStream(file, true);
             writer = new ObjectOutputStream(output);
-
+            
             writer.writeObject(escribir);
 
             output.close();
@@ -109,6 +102,7 @@ public class Avion implements Serializable
         File file = new File(fileName);
         FileInputStream input=null;
         ObjectInputStream reader=null;
+        
         try
         {
             if(!file.exists())
@@ -118,9 +112,7 @@ public class Avion implements Serializable
             else
             {
                 input = new FileInputStream(file);
-                reader = new ObjectInputStream(input);
-
-                  
+                reader = new ObjectInputStream(input); 
                 recibir = (Avion)reader.readObject();
             }
             input.close();
@@ -132,9 +124,5 @@ public class Avion implements Serializable
         } 
         
         return recibir;
-    }
-    
-    
-    
-    
+    }  
 }

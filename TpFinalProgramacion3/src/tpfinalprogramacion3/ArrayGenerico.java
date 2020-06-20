@@ -102,6 +102,7 @@ public class ArrayGenerico<E>
         File file = new File(fileName);
         FileInputStream input=null;
         ObjectInputStream reader=null;
+        
         try
         {
             if(!file.exists())
@@ -112,8 +113,6 @@ public class ArrayGenerico<E>
             {
                 input = new FileInputStream(file);
                 reader = new ObjectInputStream(input);
-
-                  
                 recibir = (ArrayList<E>)reader.readObject();
             }
             input.close();
