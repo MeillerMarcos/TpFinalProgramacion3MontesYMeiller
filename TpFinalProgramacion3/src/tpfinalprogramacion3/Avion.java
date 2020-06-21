@@ -1,27 +1,29 @@
 package tpfinalprogramacion3;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 
 public class Avion implements Serializable
 {
+    protected int capacidadDeCombustible;
     protected int costoPorKm;
     protected int capacidadMaxPasajeros;
     protected int velocidadMaxima;
     protected String tipoDePropulsion;
 
-    public Avion(int costoPorKm, int capacidadMaxPasajeros, int velocidadMaxima, String tipoDePropulsion) 
+    public Avion(int capacidadDeCombustible, int costoPorKm, int capacidadMaxPasajeros, int velocidadMaxima, String tipoDePropulsion) 
     {
+        this.capacidadDeCombustible = capacidadDeCombustible;
         this.costoPorKm = costoPorKm;
         this.capacidadMaxPasajeros = capacidadMaxPasajeros;
         this.velocidadMaxima = velocidadMaxima;
         this.tipoDePropulsion = tipoDePropulsion;
     }
 
+    public int getCapacidadDeCombustible() 
+    {
+        return capacidadDeCombustible;
+    }
+    
     public int getCostoPorKm() 
     {
         return costoPorKm;
@@ -40,6 +42,11 @@ public class Avion implements Serializable
     public String getTipoDePropulsion() 
     {
         return tipoDePropulsion;
+    }
+
+    public void setCapacidadDeCombustible(int capacidadDeCombustible) 
+    {
+        this.capacidadDeCombustible = capacidadDeCombustible;
     }
 
     public void setCostoPorKm(int costoPorKm) 
@@ -73,9 +80,7 @@ public class Avion implements Serializable
         return tarifa;
     }
     
-
-    
-        public void escribirArchivo (String fileName,Avion escribir) 
+    public void escribirArchivo (String fileName,Avion escribir) 
     {
         File file = new File(fileName); 
         file.delete();
@@ -91,7 +96,7 @@ public class Avion implements Serializable
             
             output = new FileOutputStream(file, true);
             writer = new ObjectOutputStream(output);
-
+            
             writer.writeObject(escribir);
 
             output.close();
@@ -109,6 +114,7 @@ public class Avion implements Serializable
         File file = new File(fileName);
         FileInputStream input=null;
         ObjectInputStream reader=null;
+        
         try
         {
             if(!file.exists())
@@ -118,9 +124,7 @@ public class Avion implements Serializable
             else
             {
                 input = new FileInputStream(file);
-                reader = new ObjectInputStream(input);
-
-                  
+                reader = new ObjectInputStream(input); 
                 recibir = (Avion)reader.readObject();
             }
             input.close();
@@ -132,9 +136,5 @@ public class Avion implements Serializable
         } 
         
         return recibir;
-    }
-    
-    
-    
-    
+    }  
 }

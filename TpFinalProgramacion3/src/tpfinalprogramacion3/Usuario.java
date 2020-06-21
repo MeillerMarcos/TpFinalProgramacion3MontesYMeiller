@@ -1,11 +1,6 @@
 package tpfinalprogramacion3;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Usuario implements Serializable
@@ -14,7 +9,8 @@ public class Usuario implements Serializable
     private String apellido;
     private int edad;
     private String dni;
-    private ArrayList <Usuario> listaUsuario = new ArrayList<Usuario>();  
+    private ArrayList <Usuario> listaUsuario = new ArrayList<Usuario>(); 
+    
     public Usuario(String nombre, String apellido, int edad, String dni) 
     {
         this.nombre = nombre;
@@ -33,7 +29,8 @@ public class Usuario implements Serializable
         return nombre;
     }
 
-    public ArrayList<Usuario> getListaUsuario() {
+    public ArrayList<Usuario> getListaUsuario() 
+    {
         return listaUsuario;
     }
 
@@ -57,7 +54,8 @@ public class Usuario implements Serializable
         this.nombre = nombre;
     }
 
-    public void setListaUsuario(ArrayList<Usuario> listaUsuario) {
+    public void setListaUsuario(ArrayList<Usuario> listaUsuario) 
+    {
         this.listaUsuario = listaUsuario;
     }
 
@@ -76,7 +74,73 @@ public class Usuario implements Serializable
         this.dni = dni;
     }
     
-        public void escribirArchivo (String fileName,ArrayList<Usuario> escribir) 
+    public String avionMasUtilizado (ArrayGenerico<Vuelo> listaVuelos)
+    {
+        int contadorGold=0;
+        int contadorSilver=0;
+        int contadorBronze=0;
+        String avionMasUtilizado = new String();
+        
+        for (int i=0;i<10;i++) 
+        {
+            if(listaVuelos.getList().get(i).getAvion() instanceof AvionGold)
+            {
+                contadorGold++; 
+            }
+            else if(listaVuelos.getList().get(i).getAvion() instanceof AvionSilver)
+            {
+                contadorSilver++;
+            }
+            else if(listaVuelos.getList().get(i).getAvion() instanceof AvionBronze)
+            {
+                contadorBronze++;
+            }
+        }
+        
+        if (contadorGold >= contadorSilver && contadorGold >= contadorBronze)
+        {
+            avionMasUtilizado="Avion Gold";
+        }
+        else
+        {
+            if (contadorSilver > contadorBronze)
+            {
+                avionMasUtilizado="Avion Silver";
+            }
+            else
+            {
+                avionMasUtilizado="Avion Bronze";  
+            }
+        }  
+    
+        return avionMasUtilizado;
+    }
+    
+    public int buscarDni (ArrayList<Usuario> listaDeUsuarios, String dni) ///devuelve -1 si no lo encuentra, si no su posicion dentro de la lista
+    {
+        int control = -1;
+        int i=0;
+        int dimension=listaDeUsuarios.size();
+        
+        if(!listaDeUsuarios.isEmpty())
+        {
+            while(i<dimension && control==-1)
+            {
+                if(listaDeUsuarios.get(i).getDni().equals(dni))
+                {
+                    control=i;
+                } 
+                else
+                {
+                    i++; 
+                }
+            }  
+        }
+        
+        return control;
+    }
+    
+    public void escribirArchivo (String fileName,ArrayList<Usuario> escribir) 
     {
         File file = new File(fileName); 
         file.delete();
@@ -104,13 +168,13 @@ public class Usuario implements Serializable
         } 
     }
     
-    
     public ArrayList<Usuario> leerArchivo (String fileName) 
     {  
         ArrayList<Usuario> recibir = new ArrayList<Usuario>();
         File file = new File(fileName);
         FileInputStream input=null;
         ObjectInputStream reader=null;
+        
         try
         {
             if(!file.exists())
@@ -121,8 +185,6 @@ public class Usuario implements Serializable
             {
                 input = new FileInputStream(file);
                 reader = new ObjectInputStream(input);
-
-                  
                 recibir = (ArrayList<Usuario>)reader.readObject();
             }
             input.close();
@@ -137,7 +199,8 @@ public class Usuario implements Serializable
     }
 
     @Override
-    public String toString() {
+    public String toString() 
+    {
         return "Usuario{" + "nombre=" + nombre + ", apellido=" + apellido + ", edad=" + edad + ", dni=" + dni + '}';
     }
     

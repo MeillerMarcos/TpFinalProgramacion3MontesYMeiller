@@ -28,7 +28,7 @@ public class ArrayGenerico<E>
         list.add(objeto);
     }
     
-    public int BuscarDentroDeLista (E buscar) ///devuelve -1 si no lo encuentra, si no su posicion dentro de la lista
+    public int buscarDentroDeLista (E buscar) ///devuelve -1 si no lo encuentra, si no su posicion dentro de la lista
     {
         int control = -1;
         int i=0;
@@ -102,6 +102,7 @@ public class ArrayGenerico<E>
         File file = new File(fileName);
         FileInputStream input=null;
         ObjectInputStream reader=null;
+        
         try
         {
             if(!file.exists())
@@ -112,8 +113,6 @@ public class ArrayGenerico<E>
             {
                 input = new FileInputStream(file);
                 reader = new ObjectInputStream(input);
-
-                  
                 recibir = (ArrayList<E>)reader.readObject();
             }
             input.close();

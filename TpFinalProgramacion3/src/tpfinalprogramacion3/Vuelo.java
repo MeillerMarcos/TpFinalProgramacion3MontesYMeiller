@@ -12,6 +12,7 @@ public class Vuelo implements Serializable
     private Avion avion;
     private float costoTotal;
     HashMap<String, Integer> distanciasOrigenDestino = new HashMap<String, Integer>();
+    Usuario usuario = new Usuario ();
     
     public Vuelo() 
     {
@@ -48,6 +49,11 @@ public class Vuelo implements Serializable
         return distanciasOrigenDestino;
     }
     
+    public Usuario getUsuario ()
+    {
+        return usuario;
+    }
+    
     public void setOrigenDestino(String origen) 
     {
         this.origenDestino = origen;
@@ -76,6 +82,11 @@ public class Vuelo implements Serializable
     public void setDistanciasOrigenDestino(HashMap<String, Integer> distanciasOrigenDestino) 
     {
         this.distanciasOrigenDestino = distanciasOrigenDestino;
+    }
+    
+    public void setUsuario (Usuario usuario)
+    {
+        this.usuario = usuario;
     }
     
     public boolean comprobarOrigenDestino (String origen, String destino)
@@ -110,18 +121,33 @@ public class Vuelo implements Serializable
         return flag;
     }
     
-        public boolean controlarFecha (Avion avion,String fecha)
+    public boolean controlarFecha (String fecha)
     {
         boolean flag = false;
-        if(this.fecha == fecha)
+        
+        if(this.fecha.equals(fecha))
         {
-         flag = true;   
+           
+            flag = true;   
         }
         
-        return flag;
-        
+        return flag; 
     }
     
+    public boolean controlarTipoDeAvion (Avion avion, Avion avionNuevo)
+    {
+        boolean flag = false;
+        
+        if(avion instanceof AvionGold)
+        {
+            if(avionNuevo instanceof AvionGold)
+            {
+                flag = true;      
+            }
+        }
+        
+        return flag; 
+    }
     
     public void cargaHashmap()
     {
@@ -172,6 +198,7 @@ public class Vuelo implements Serializable
         File file = new File(fileName);
         FileInputStream input=null;
         ObjectInputStream reader=null;
+        
         try
         {
             if(!file.exists())
@@ -182,8 +209,6 @@ public class Vuelo implements Serializable
             {
                 input = new FileInputStream(file);
                 reader = new ObjectInputStream(input);
-
-                  
                 recibir = (Vuelo)reader.readObject();
             }
             input.close();
