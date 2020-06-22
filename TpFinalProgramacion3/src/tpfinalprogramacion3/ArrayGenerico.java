@@ -52,6 +52,12 @@ public class ArrayGenerico<E>
         return control;
     }
     
+    public void quitarElementoDeArray (ArrayGenerico<E> lista,E eliminar)//devuelve false si no se encontro y sino True si se elimino
+    { 
+        int i = lista.buscarDentroDeLista(eliminar);
+        lista.eliminar(i);   
+    }
+    
     public int eliminar (int posicion) //elimina el elemento indicado y devuelve -1 si no se borro
     {
        
@@ -141,6 +147,10 @@ public class ArrayGenerico<E>
             System.out.println(e); 
         }  
     }
+    
+    
+   
+    
     
     public ArrayList<E> leerArchivoGSon (String archivo, ArrayList<E> arrayG)
     {

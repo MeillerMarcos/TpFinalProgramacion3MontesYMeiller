@@ -1,10 +1,15 @@
 package tpfinalprogramacion3;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class TpFinalProgramacion3 
 {
+    public static Scanner scan = new Scanner(System.in);
+    public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+    public static Date fecha = new Date();
     private static ArrayList<Vuelo> vuelos = new ArrayList<Vuelo>();
     private static ArrayGenerico<Vuelo> listaVuelos = new ArrayGenerico<Vuelo>(vuelos);
     private static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
@@ -54,7 +59,6 @@ public class TpFinalProgramacion3
 
     public static void menuPrincipal ()
     {
-        Scanner scan = new Scanner(System.in);
         int opcion=0;
         int i = 0;
         
@@ -64,12 +68,14 @@ public class TpFinalProgramacion3
         System.out.println("1. Menu de usuarios");
         System.out.println("2. Contratar un nuevo vuelo");
         System.out.println("3. Listado de fechas de vuelos");
-        System.out.println("4. Salir");
+        System.out.println("4. Cancelar vuelo");
+        System.out.println("5. Salir");
         System.out.println();
         System.out.print("Opción: ");
         opcion = scan.nextInt();
-        
-        if(opcion<1 || opcion>4)
+        listaVuelos.setList(listaVuelos.leerArchivo("vuelos.txt"));
+        listaUsuarios.setList(listaUsuarios.leerArchivo("usuarios.txt"));
+        if(opcion<1 || opcion>5)
         {
             mensajeOpcionInvalida();
             menuPrincipal();
@@ -110,6 +116,15 @@ public class TpFinalProgramacion3
                 menuPrincipal();
                 break;
             case 4:
+                
+               
+                menuEliminar ();
+                System.out.println("Se cancela el vuelo. ");
+                
+                System.out.println("DateFormatSymbols: "+sdf.format(fecha));
+                System.out.println("fechaDay: "+fecha.getDate());
+                break;
+            case 5:
                 System.exit(0);
         }
     }
@@ -138,7 +153,7 @@ public class TpFinalProgramacion3
     
     public static void cargarVuelo ()
     {
-        Scanner scan = new Scanner(System.in);
+        Date fecha = new Date();
         Vuelo vuelo = new Vuelo();
         Usuario usuario = new Usuario();
         String fechaElegida = new String();
@@ -156,7 +171,7 @@ public class TpFinalProgramacion3
         int i=0;
         int buscarUsuario=0;
         String dni= new String();
-        
+        vuelo.setList(listaVuelos.leerArchivo("vuelos.txt"));
         if(aviones.isEmpty())
         {
             aviones.add(avionGold);
@@ -171,10 +186,17 @@ public class TpFinalProgramacion3
         ArrayGenerico<Avion> listaDeAviones = new ArrayGenerico<Avion>(aviones);
         
         refrescarConsola();
+        System.out.println("Ingrese '0' para cancelar la operacion.");
         System.out.print("Ingrese su DNI: ");
         dni = scan.next();
+         if(dni=="0")
+        {
+            menuPrincipal();
+        }
+        
         buscarUsuario=usuario.buscarDni(listaUsuarios.getList(), dni);
         
+       
         if(buscarUsuario==-1)
         {
             System.out.println();
@@ -186,7 +208,8 @@ public class TpFinalProgramacion3
         vuelo.setUsuario(listaUsuarios.getList().get(buscarUsuario));
 
         fechaElegida = ingresarFecha();
-        vuelo.setFecha(fechaElegida);   
+        vuelo.setFecha(fechaElegida); 
+        
         System.out.print("Fecha elegida del vuelo: "+fechaElegida);
         puntosSuspensivos();
         
@@ -404,6 +427,7 @@ public class TpFinalProgramacion3
         {
             case 1:
                 listaVuelos.getList().add(vuelo);
+                System.out.println(listaVuelos.getList().size());
                 listaVuelos.escribirArchivo("vuelos.txt", listaVuelos.getList());
                 System.out.println();
                 System.out.print("Vuelo confirmado");
@@ -418,7 +442,6 @@ public class TpFinalProgramacion3
     
     public static void menuUsuarios ()
     {
-        Scanner scan = new Scanner(System.in);
         Usuario usuario = new Usuario();
         int opcion=0;
         int i=0;
@@ -491,8 +514,13 @@ public class TpFinalProgramacion3
                         System.out.println("Apellido: "+listaUsuarios.getList().get(i).getApellido());
                         System.out.println("Edad: "+listaUsuarios.getList().get(i).getEdad());
                         System.out.println("Dni: "+listaUsuarios.getList().get(i).getDni());
-                        System.out.println("Avion mas utilizado: "+listaUsuarios.getList().get(i).avionMasUtilizado(listaVuelos));
-                        System.out.println("Costo total de todos los vuelos: ");
+                        if(!listaVuelos.getList().isEmpty())
+                        {
+                            
+                            System.out.println("Avion mas utilizado: "+listaUsuarios.getList().get(i).avionMasUtilizado(listaVuelos,listaUsuarios.getList().get(i).getDni()));
+                            
+                            System.out.println("Costo total de todos los vuelos: " + listaUsuarios.getList().get(i).costoTotalDeVuelos(listaVuelos,listaUsuarios.getList().get(i).getDni()));
+                        }
                         System.out.println("---------------------------");
                     } 
                 }
@@ -515,7 +543,6 @@ public class TpFinalProgramacion3
 
     public static int validarAnio ()
     {
-        Scanner scan = new Scanner(System.in);
         int anio=0;
 
         System.out.println("\n\nIngrese anio del 2020 al 2030: ");
@@ -546,7 +573,6 @@ public class TpFinalProgramacion3
 
     public static int validarMes ()
     {
-        Scanner scan = new Scanner(System.in);
         int mes=0;
 
         System.out.println("Ingrese mes del 1 al 12: ");
@@ -577,7 +603,6 @@ public class TpFinalProgramacion3
     
     public static String ingresarFecha ()
     {
-        Scanner scan = new Scanner(System.in);
         String fecha = new String();
         int limiteDia=0;
         int dia=0;
@@ -714,4 +739,49 @@ public class TpFinalProgramacion3
         
         return fecha;
     }
+    
+    public static void menuEliminar ()
+    {
+        listaVuelos.setList(listaVuelos.leerArchivo("vuelos.txt"));
+        Scanner scan = new Scanner(System.in);
+        String dni = new String();
+        ArrayList<Integer> posicion = new ArrayList<Integer>();
+        int buscarUsuario=0;
+        int i = 0;
+        Usuario usuario = new Usuario();
+        Vuelo vuelo = new Vuelo();
+        System.out.print("Ingrese su DNI: ");
+        dni = scan.next();
+        buscarUsuario=usuario.buscarDni(listaUsuarios.getList(), dni);
+        
+        if(buscarUsuario==-1)
+        {
+            System.out.println();
+            System.out.print("Usuario no encontrado");
+            puntosSuspensivos();
+            menuPrincipal();
+        }
+        usuario.setDni(dni);
+        for(i=0;i<listaVuelos.getList().size();i++)
+        {
+            if(listaVuelos.getList().get(i).getUsuario().getDni().equals(usuario.getDni()))
+            {
+               posicion.add(i);
+            }
+        }
+        System.out.println("eliga cual desea eliminar");
+        for(i = 0; i<posicion.size(); i++)
+        {
+            System.out.println("Opcion : " + (i+1) + " " + listaVuelos.getList().get(posicion.get(i)).getFecha());
+        }
+        i = scan.nextInt();
+        i--;
+        listaVuelos.quitarElementoDeArray(listaVuelos,listaVuelos.getList().get(posicion.get(i)));
+        
+        listaVuelos.escribirArchivo("vuelos.txt", listaVuelos.getList());
+        puntosSuspensivos();
+        menuPrincipal();
+        
+    }
+    
 }

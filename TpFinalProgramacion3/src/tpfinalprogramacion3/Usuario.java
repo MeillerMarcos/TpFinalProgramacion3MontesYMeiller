@@ -74,30 +74,30 @@ public class Usuario implements Serializable
         this.dni = dni;
     }
     
-    public String avionMasUtilizado (ArrayGenerico<Vuelo> listaVuelos)
+    public String avionMasUtilizado (ArrayGenerico<Vuelo> listaVuelos, String dni)
     {
         int contadorGold=0;
         int contadorSilver=0;
         int contadorBronze=0;
         String avionMasUtilizado = new String();
         
-        for (int i=0;i<10;i++) 
+        for (int i=0;i<listaVuelos.getList().size();i++) 
         {
-            if(listaVuelos.getList().get(i).getAvion() instanceof AvionGold)
+            if(listaVuelos.getList().get(i).getAvion() instanceof AvionGold && listaVuelos.getList().get(i).getUsuario().getDni().equals(dni))
             {
                 contadorGold++; 
             }
-            else if(listaVuelos.getList().get(i).getAvion() instanceof AvionSilver)
+            else if(listaVuelos.getList().get(i).getAvion() instanceof AvionSilver && listaVuelos.getList().get(i).getUsuario().getDni().equals(dni))
             {
                 contadorSilver++;
             }
-            else if(listaVuelos.getList().get(i).getAvion() instanceof AvionBronze)
+            else if(listaVuelos.getList().get(i).getAvion() instanceof AvionBronze && listaVuelos.getList().get(i).getUsuario().getDni().equals(dni))
             {
                 contadorBronze++;
             }
         }
-        
-        if (contadorGold >= contadorSilver && contadorGold >= contadorBronze)
+       
+        if (contadorGold >= contadorSilver && contadorGold >= contadorBronze )
         {
             avionMasUtilizado="Avion Gold";
         }
@@ -112,8 +112,22 @@ public class Usuario implements Serializable
                 avionMasUtilizado="Avion Bronze";  
             }
         }  
-    
+         if(contadorGold == 0 && contadorSilver == 0 && contadorBronze == 0 )
+             avionMasUtilizado = "No utilizo ningun avion...";
+        
         return avionMasUtilizado;
+    }
+    
+    public int costoTotalDeVuelos (ArrayGenerico<Vuelo> listaVuelos, String dni)
+    {
+        int i = 0;
+        int total = 0;
+        for(i= 0; i< listaVuelos.getList().size();i++)
+        {
+            if(listaVuelos.getList().get(i).getUsuario().getDni().equals(dni))
+                total += listaVuelos.getList().get(i).getCostoTotal();
+        }
+        return total;
     }
     
     public int buscarDni (ArrayList<Usuario> listaDeUsuarios, String dni) ///devuelve -1 si no lo encuentra, si no su posicion dentro de la lista
