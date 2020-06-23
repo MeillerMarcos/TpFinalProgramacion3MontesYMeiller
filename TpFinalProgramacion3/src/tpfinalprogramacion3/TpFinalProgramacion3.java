@@ -2,6 +2,7 @@ package tpfinalprogramacion3;
 
 
 import com.google.gson.reflect.TypeToken;
+import java.awt.HeadlessException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,10 +67,9 @@ public class TpFinalProgramacion3
     {
         int opcion=0;
         int i = 0;
-
         listaVuelos.setList(listaVuelos.leerArchivoGSon("vuelosGSON.json", new TypeToken<ArrayList<Vuelo>>(){}.getType()));
         listaUsuarios.setList(listaUsuarios.leerArchivoGSon("usuariosGSON.json",new TypeToken<ArrayList<Usuario>>(){}.getType()));
-        
+
         refrescarConsola();
         System.out.println("------Menu principal------");
         System.out.println();
@@ -80,17 +80,20 @@ public class TpFinalProgramacion3
         System.out.println("5. Salir");
         System.out.println();
         System.out.print("Opción: ");
-
+            
         try
         {
+            
             opcion = scan.nextInt();
+            
         }
-        catch (InputMismatchException ex)
+        catch(Exception e)
         {
             mensajeOpcionInvalida();
-            menuPrincipal();
+            scan.nextLine();
+            menuPrincipal(); 
         }
-
+        
         if(opcion<1 || opcion>5)
         {
             mensajeOpcionInvalida();
@@ -184,7 +187,16 @@ public class TpFinalProgramacion3
             System.out.println(i +1 + ". "+ lista.get(i));
         }
 
-        i = scan.nextInt();
+        try
+        {
+            i = scan.nextInt();
+        }
+        catch(Exception e)
+        {
+            mensajeOpcionInvalida();
+            scan.nextLine();
+            menuPrincipal();
+        }
 
         while(i<1 || i>lista.size())
         {
@@ -287,7 +299,19 @@ public class TpFinalProgramacion3
         System.out.println("Fecha de vuelo: "+fechaElegida.toString());
         System.out.println();
         System.out.println("Eliga la cantidad de acompañantes: ");
-        cantidadElegida = scan.nextInt();
+        
+        try
+        {
+            cantidadElegida = scan.nextInt();
+        }
+        catch(Exception e)
+        {
+            mensajeOpcionInvalida();
+            scan.nextLine();
+            menuPrincipal();
+        }
+        
+        
         vuelo.setCantidadAcompañantes(cantidadElegida);
         System.out.println();
 
@@ -309,7 +333,17 @@ public class TpFinalProgramacion3
         System.out.println("Fecha de vuelo: "+fechaElegida.toString());
         System.out.println();
         mostrarOpcionesTipoDeAvion();
-        opcion = scan.nextInt();
+        
+        try
+        {
+            opcion = scan.nextInt();
+        }
+        catch(Exception e)
+        {
+            mensajeOpcionInvalida();
+            scan.nextLine();
+            menuPrincipal();
+        }
 
         while(opcion<1 || opcion>3)
         {
@@ -318,10 +352,17 @@ public class TpFinalProgramacion3
             System.out.println("Fecha de vuelo: "+fechaElegida.toString());
             System.out.println();
             mostrarOpcionesTipoDeAvion();
-            opcion = scan.nextInt();
-            System.out.println();
-            System.out.print("Opción: ");
-            opcion = scan.nextInt();
+            
+            try
+            {
+                opcion = scan.nextInt();
+            }
+            catch(Exception e)
+            {
+                mensajeOpcionInvalida();
+                scan.nextLine();
+                menuPrincipal();
+            }
         }
 
         switch(opcion)
@@ -441,8 +482,24 @@ public class TpFinalProgramacion3
         System.out.println("2. No");
         System.out.println();
         System.out.print("Opción: ");
-        opcion = scan.nextInt();
+        
+        try
+        {
+            opcion = scan.nextInt();
+        }
+        catch(Exception e)
+        {
+            mensajeOpcionInvalida();
+            scan.nextLine();
+            menuPrincipal();
+        }
 
+        if(opcion<1 || opcion>3)
+        {
+            mensajeOpcionInvalida();
+            menuPrincipal();
+        }
+        
         switch(opcion)
         {
             case 1:
@@ -474,11 +531,11 @@ public class TpFinalProgramacion3
             menuPrincipal();
         }
 
-        while(fecha.getAnio() < (date.getYear()+1900))
+        while((fecha.getAnio() < (date.getYear()+1900)) || (fecha.getAnio()>2050))
         {
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/__/__");
-            System.out.println("\nAnio invalido. El anio debe ser mayor o igual a "+(date.getYear()+1900));
+            System.out.println("\nAnio invalido. El anio debe variar entre "+(date.getYear()+1900)+" y 2050");
             puntosSuspensivos();
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/__/__");
@@ -503,7 +560,7 @@ public class TpFinalProgramacion3
             menuPrincipal();
         }
 
-        while(fecha.getMes() < (date.getMonth()+1))
+        while((fecha.getMes() < (date.getMonth()+1)) || (fecha.getMes()>12 && fecha.getMes()<1))
         {
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/__/"+fecha.getAnio());
@@ -574,11 +631,31 @@ public class TpFinalProgramacion3
 
         if(fecha.getMes() == (date.getMonth()+1))  
         {
-            while(fecha.getDia() < date.getDate())
+            while((fecha.getDia() < date.getDate()) || (fecha.getDia()<1))
             {
                 refrescarConsola();
                 System.out.println("\nFecha de vuelo:__/"+fecha.getMes()+"/"+fecha.getAnio()+"/");
                 System.out.println("\nEl dia puede variar de "+date.getDate()+" a "+limiteDia+".");
+                puntosSuspensivos();
+                refrescarConsola();
+                System.out.println("\nFecha de vuelo:__/"+fecha.getMes()+"/"+fecha.getAnio()+"/");
+                System.out.println("\nIngrese '0' para cancelar la operacion.");
+                System.out.print("Ingrese el dia: ");
+                fecha.setDia(scan.nextInt());
+
+                if(fecha.getDia()==0)
+                {
+                    menuPrincipal();
+                }
+            }
+        }
+        else
+        {
+            while((fecha.getDia()<1) || (fecha.getDia()>limiteDia))
+            {
+                refrescarConsola();
+                System.out.println("\nFecha de vuelo:__/"+fecha.getMes()+"/"+fecha.getAnio()+"/");
+                System.out.println("\nEl dia puede variar de 1 a "+limiteDia+".");
                 puntosSuspensivos();
                 refrescarConsola();
                 System.out.println("\nFecha de vuelo:__/"+fecha.getMes()+"/"+fecha.getAnio()+"/");
@@ -613,8 +690,18 @@ public class TpFinalProgramacion3
         System.out.println("3. Volver");
         System.out.println();
         System.out.print("Opción: ");
-        opcion = scan.nextInt();
-
+        
+        try
+        {
+            opcion = scan.nextInt();
+        }
+        catch(Exception e)
+        {
+            mensajeOpcionInvalida();
+            scan.nextLine();
+            menuUsuarios();
+        }
+        
         if(opcion<1 || opcion>3)
         {
             mensajeOpcionInvalida();
@@ -625,7 +712,6 @@ public class TpFinalProgramacion3
         {
             case 1:
                 refrescarConsola();
-
                 System.out.println();
                 System.out.print("Ingrese su DNI: ");
                 usuario.setDni(scan.next());
@@ -645,8 +731,17 @@ public class TpFinalProgramacion3
                 usuario.setApellido(scan.next());
                 System.out.println();
                 System.out.print("Ingrese su edad: ");
-                usuario.setEdad(scan.nextInt());
-
+                
+                try
+                {
+                    usuario.setEdad(scan.nextInt());
+                }
+                catch(Exception e)
+                {
+                    mensajeOpcionInvalida();
+                    scan.nextLine();
+                    menuUsuarios();
+                }
                 listaUsuarios.getList().add(usuario);
                 listaUsuarios.escribirArchivoGSon("usuariosGSON.json", listaUsuarios.getList());
 
@@ -703,6 +798,13 @@ public class TpFinalProgramacion3
         int i = 0;
         Usuario usuario = new Usuario();
         Vuelo vuelo = new Vuelo();
+        int diaIngresado=0;
+        int mesIngresado=0;
+        int anioIngresado=0;
+        int diaActual=0;
+        int mesActual=0;
+        int anioActual=0;
+        int opcion=0;
         
         listaVuelos.setList(listaVuelos.leerArchivoGSon("vuelosGSON.json", new TypeToken<ArrayList<Vuelo>>(){}.getType()));
         listaUsuarios.setList(listaUsuarios.leerArchivoGSon("usuariosGSON.json", new TypeToken<ArrayList<Usuario>>(){}.getType()));
@@ -734,21 +836,74 @@ public class TpFinalProgramacion3
         {
             System.out.println("Opcion: " + (i+1) + " " + listaVuelos.getList().get(posicion.get(i)).getFecha());
         }
-        i = scan.nextInt();
-        i--;
         
-        if((date.getYear()+1900) <= (listaVuelos.getList().get(posicion.get(i)).getFecha().getAnio()) 
-        && ((date.getMonth()+1) <= listaVuelos.getList().get(posicion.get(i)).getFecha().getMes())
-        && (date.getDate() < listaVuelos.getList().get(posicion.get(i)).getFecha().getDia()))
-        {
-            listaVuelosBorrados.getList().add((listaVuelos.getList().get(posicion.get(i))));
-            listaVuelos.quitarElementoDeArray(listaVuelos,listaVuelos.getList().get(posicion.get(i)));
-            listaVuelos.escribirArchivoGSon("vuelosGSON.json", listaVuelos.getList());
-            listaVuelosBorrados.escribirArchivoGSon("vuelosBorradosGSON.json", listaVuelosBorrados.getList());
-            System.out.println();
-            System.out.print("Vuelo eliminado satisfactoriamente");  
+        try
+        { 
+            i = scan.nextInt();
+            i--;
         }
-        else
+        catch(Exception e)
+        {
+            mensajeOpcionInvalida();
+            scan.nextLine();
+            menuPrincipal(); 
+        }
+        
+        if(i<0 || i>posicion.size())
+        {
+            mensajeOpcionInvalida();
+            menuPrincipal();
+        }
+        
+        diaIngresado=listaVuelos.getList().get(posicion.get(i)).getFecha().getDia();
+        mesIngresado=listaVuelos.getList().get(posicion.get(i)).getFecha().getMes();
+        anioIngresado=listaVuelos.getList().get(posicion.get(i)).getFecha().getAnio();
+        diaActual=date.getDate();
+        mesActual=date.getMonth()+1;
+        anioActual=date.getYear()+1900;
+        
+        if((mesIngresado > mesActual) && (anioIngresado >= anioActual))
+        {
+            if(diaIngresado == diaActual)
+            {
+                System.out.println();
+                System.out.print("Debe eliminar un vuelo con al menos un dia de anticipación");
+            }
+            else
+            {
+                System.out.println("¿Esta seguro que desea eliminar el vuelo?: ");
+                System.out.println("1. Si");
+                System.out.println("2. No");
+                
+                try
+                { 
+                    opcion = scan.nextInt();
+                }
+                catch(Exception e)
+                {
+                    mensajeOpcionInvalida();
+                    scan.nextLine();
+                    menuPrincipal(); 
+                }
+                
+                if(opcion<1 && opcion>2)
+                {
+                    mensajeOpcionInvalida();
+                    menuPrincipal();
+                }
+                
+                if(opcion==1)
+                {
+                    listaVuelosBorrados.getList().add((listaVuelos.getList().get(posicion.get(i))));
+                    listaVuelos.quitarElementoDeArray(listaVuelos,listaVuelos.getList().get(posicion.get(i)));
+                    listaVuelos.escribirArchivoGSon("vuelosGSON.json", listaVuelos.getList());
+                    listaVuelosBorrados.escribirArchivoGSon("vuelosBorradosGSON.json", listaVuelosBorrados.getList());
+                    System.out.println();
+                    System.out.print("Vuelo eliminado satisfactoriamente");  
+                }
+            } 
+        }
+        if((anioIngresado == anioActual) && (mesIngresado == mesActual) && (diaIngresado == diaActual))
         {
             System.out.println();
             System.out.print("Debe eliminar un vuelo con al menos un dia de anticipación");
