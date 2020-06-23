@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Vuelo implements Serializable
 {
     private String origenDestino;
-    private String fecha;
+    private Fecha fecha;
     private int cantidadAcompañantes;
     private Avion avion;
     private float costoTotal;
@@ -24,7 +24,7 @@ public class Vuelo implements Serializable
         return origenDestino;
     }
 
-    public String getFecha() 
+    public Fecha getFecha() 
     {
         return fecha;
     }
@@ -59,7 +59,7 @@ public class Vuelo implements Serializable
         this.origenDestino = origen;
     }
     
-    public void setFecha(String fecha) 
+    public void setFecha(Fecha fecha) 
     {
         this.fecha = fecha;
     }
@@ -121,7 +121,7 @@ public class Vuelo implements Serializable
         return flag;
     }
     
-    public boolean controlarFecha (String fecha)
+    public boolean controlarFecha (Fecha fecha)
     {
         boolean flag = false;
         
@@ -167,7 +167,7 @@ public class Vuelo implements Serializable
     public void calcularTotal(String key)
     {
         int cantidadDeKm = distanciasOrigenDestino.get(key);
-        costoTotal = (cantidadDeKm * avion.getCostoPorKm()) + (cantidadAcompañantes * 3500) +  avion.tarifaAvion(avion); 
+        costoTotal = (cantidadDeKm * avion.getCostoPorKm()) + (cantidadAcompañantes * 3500) +  avion.tarifaAvion();  //parametro avion a tarifa
     }
     
     public void escribirArchivo (String fileName,Vuelo vuelo) 
@@ -264,7 +264,7 @@ public class Vuelo implements Serializable
     @Override
     public String toString() 
     {
-        return "---Vuelo---" + "  origenDestino:" + origenDestino + "  fecha:" + fecha + "  cantidadAcompañantes:" + cantidadAcompañantes + "  avion:" + avion + "  costoTotal:" 
+        return "---Vuelo---" + "  origenDestino:" + origenDestino + "  fecha:" + fecha.toString() + "  cantidadAcompañantes:" + cantidadAcompañantes + "  avion:" + avion + "  costoTotal:" 
         + costoTotal + "  distanciasOrigenDestino:" + distanciasOrigenDestino + "  usuario:" + usuario + " ---";
     }
     

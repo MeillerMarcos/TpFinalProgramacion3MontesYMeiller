@@ -72,15 +72,15 @@ public class Usuario implements Serializable
         
         for (int i=0;i<listaVuelos.getList().size();i++) 
         {
-            if(listaVuelos.getList().get(i).getAvion() instanceof AvionGold && listaVuelos.getList().get(i).getUsuario().getDni().equals(dni))
+            if(listaVuelos.getList().get(i).getAvion().getTipoDeAvion().equals("Avion Gold") && listaVuelos.getList().get(i).getUsuario().getDni().equals(dni))
             {
                 contadorGold++; 
             }
-            else if(listaVuelos.getList().get(i).getAvion() instanceof AvionSilver && listaVuelos.getList().get(i).getUsuario().getDni().equals(dni))
+            else if(listaVuelos.getList().get(i).getAvion().getTipoDeAvion().equals("Avion Silver") && listaVuelos.getList().get(i).getUsuario().getDni().equals(dni))
             {
                 contadorSilver++;
             }
-            else if(listaVuelos.getList().get(i).getAvion() instanceof AvionBronze && listaVuelos.getList().get(i).getUsuario().getDni().equals(dni))
+            else if(listaVuelos.getList().get(i).getAvion().getTipoDeAvion().equals("Avion Bronze") && listaVuelos.getList().get(i).getUsuario().getDni().equals(dni))
             {
                 contadorBronze++;
             }

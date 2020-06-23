@@ -122,10 +122,10 @@ public class ArrayGenerico<E>
         } 
     }
     
-    public ArrayList<E> leerArchivo (String fileName) //lee los datos de el archivo indicado
+    public ArrayList<E> leerArchivo (String nombreArchivo) //lee los datos de el archivo indicado
     {  
         ArrayList<E> recibir = new ArrayList<E>();
-        File file = new File(fileName);
+        File file = new File(nombreArchivo);
         FileInputStream input=null;
         ObjectInputStream reader=null;
         
@@ -152,15 +152,23 @@ public class ArrayGenerico<E>
         return recibir;
     }
     
-    public void escribirArchivoGSon (String archivo, ArrayList<E> arrayG)
+    public void escribirArchivoGSon (String nombreArchivo, ArrayList<E> arrayG)
     {
+        File file = new File(nombreArchivo);
+        file.delete();
+        
         try
         {
+            if(!file.exists())
+            {
+                file.createNewFile();
+            }
+                
             Gson gson = new Gson();
             String cadenaJson = gson.toJson(arrayG);
-            FileWriter fileWriter = new FileWriter(archivo, true);
+            FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(cadenaJson);
-            fileWriter.close();
+            fileWriter.close(); 
         }
         catch(Exception e)
         {
@@ -168,14 +176,14 @@ public class ArrayGenerico<E>
         }
     }
     
-    public ArrayList<E> leerArchivoGSon (String nombreArchivo)
+    public ArrayList<E> leerArchivoGSon (String nombreArchivo, Type type)
     {
         ArrayList<E> listaUsuarios = new ArrayList<E>();
-        Type type = new TypeToken<ArrayList<E>>(){}.getType();
         
         try
         {
-            File file = new File(nombreArchivo);
+            String path =new File(".").getCanonicalPath() + "/" + nombreArchivo;
+            File file = new File(path);
             Gson gson = new Gson();
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             listaUsuarios = gson.fromJson(bufferedReader, type);
@@ -184,7 +192,6 @@ public class ArrayGenerico<E>
         {
             System.out.println(e); 
         } 
-        System.out.println("sout en leer: "+listaUsuarios.toString());
 
         return listaUsuarios;
     }

@@ -9,14 +9,16 @@ public class Avion implements Serializable
     protected int capacidadMaxPasajeros;
     protected int velocidadMaxima;
     protected String tipoDePropulsion;
+    protected String tipoDeAvion;
 
-    public Avion(int capacidadDeCombustible, int costoPorKm, int capacidadMaxPasajeros, int velocidadMaxima, String tipoDePropulsion) 
+    public Avion(int capacidadDeCombustible, int costoPorKm, int capacidadMaxPasajeros, int velocidadMaxima, String tipoDePropulsion, String tipoDeAvion) 
     {
         this.capacidadDeCombustible = capacidadDeCombustible;
         this.costoPorKm = costoPorKm;
         this.capacidadMaxPasajeros = capacidadMaxPasajeros;
         this.velocidadMaxima = velocidadMaxima;
         this.tipoDePropulsion = tipoDePropulsion;
+        this.tipoDeAvion = tipoDeAvion;
     }
 
     public int getCapacidadDeCombustible() 
@@ -42,6 +44,11 @@ public class Avion implements Serializable
     public String getTipoDePropulsion() 
     {
         return tipoDePropulsion;
+    }
+    
+    public String getTipoDeAvion ()
+    {
+        return tipoDeAvion;
     }
 
     public void setCapacidadDeCombustible(int capacidadDeCombustible) 
@@ -69,73 +76,69 @@ public class Avion implements Serializable
         this.tipoDePropulsion = tipoDePropulsion;
     }
     
+    public String setTipoDeAvion ()
+    {
+        String tipoDeAvion = new String();
+        
+        if(this instanceof AvionGold)
+        {
+            tipoDeAvion = "Avion Gold";
+        }
+        
+        if(this instanceof AvionSilver)
+        {
+            tipoDeAvion = "Avion Gold";
+        }
+        
+        if(this instanceof AvionBronze)
+        {
+            tipoDeAvion = "Avion Gold";
+        }
+        
+        return tipoDeAvion;
+    }
+    
     public int tarifaAvion (Avion tipo)
     {
         int tarifa=0;
+        
         if(tipo instanceof AvionGold)
+        {
             tarifa = 6000;
+        }
+            
         if(tipo instanceof AvionSilver)
+        {
             tarifa = 4000;
+        }
+            
         if(tipo instanceof AvionBronze)
+        {
             tarifa = 3000;
+        }
+            
         return tarifa;
     }
     
-//    public void escribirArchivo (String fileName,Avion escribir) 
-//    {
-//        File file = new File(fileName); 
-//        file.delete();
-//        FileOutputStream output=null;
-//        ObjectOutputStream writer=null;
-//        
-//        try
-//        {
-//            if(!file.exists())
-//            {
-//                file.createNewFile();
-//            }
-//            
-//            output = new FileOutputStream(file, true);
-//            writer = new ObjectOutputStream(output);
-//            
-//            writer.writeObject(escribir);
-//
-//            output.close();
-//            writer.close();    
-//        }
-//        catch(Exception e)
-//        {
-//            System.out.println("Error dentro de escribirArchivo");   
-//        } 
-//    }
-    
-    
-//    public Avion leerArchivo (String fileName,Avion recibir) 
-//    {  
-//        File file = new File(fileName);
-//        FileInputStream input=null;
-//        ObjectInputStream reader=null;
-//        
-//        try
-//        {
-//            if(!file.exists())
-//            {
-//                file.createNewFile();
-//            }
-//            else
-//            {
-//                input = new FileInputStream(file);
-//                reader = new ObjectInputStream(input); 
-//                recibir = (Avion)reader.readObject();
-//            }
-//            input.close();
-//            reader.close();    
-//        }
-//        catch(Exception e)
-//        {
-//            System.out.println("Error dentro de leerArchivo");        
-//        } 
-//        
-//        return recibir;
-//    }  
+    public int tarifaAvion ()
+    {
+        int tarifa=0;
+        
+        if(this instanceof AvionGold)
+        {
+            tarifa = 6000;
+        }
+            
+        if(this instanceof AvionSilver)
+        {
+            tarifa = 4000;
+        }
+            
+        if(this instanceof AvionBronze)
+        {
+            tarifa = 3000;
+        }
+            
+        return tarifa;
+    }
 }
