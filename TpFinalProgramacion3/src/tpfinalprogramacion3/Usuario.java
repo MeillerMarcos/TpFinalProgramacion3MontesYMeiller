@@ -8,8 +8,7 @@ public class Usuario implements Serializable
     private String nombre;
     private String apellido;
     private int edad;
-    private String dni;
-    private ArrayList <Usuario> listaUsuario = new ArrayList<Usuario>(); 
+    private String dni; 
     
     public Usuario(String nombre, String apellido, int edad, String dni) 
     {
@@ -27,11 +26,6 @@ public class Usuario implements Serializable
     public String getNombre() 
     {
         return nombre;
-    }
-
-    public ArrayList<Usuario> getListaUsuario() 
-    {
-        return listaUsuario;
     }
 
     public String getApellido() 
@@ -52,11 +46,6 @@ public class Usuario implements Serializable
     public void setNombre(String nombre) 
     {
         this.nombre = nombre;
-    }
-
-    public void setListaUsuario(ArrayList<Usuario> listaUsuario) 
-    {
-        this.listaUsuario = listaUsuario;
     }
 
     public void setApellido(String apellido) 
@@ -215,7 +204,7 @@ public class Usuario implements Serializable
     @Override
     public String toString() 
     {
-        return "Usuario{" + "nombre=" + nombre + ", apellido=" + apellido + ", edad=" + edad + ", dni=" + dni + '}';
+        return "---Usuario---" + " nombre:" + nombre + "  apellido:" + apellido + "  edad:" + edad + "  dni:" + dni + " ---";
     }
     
     

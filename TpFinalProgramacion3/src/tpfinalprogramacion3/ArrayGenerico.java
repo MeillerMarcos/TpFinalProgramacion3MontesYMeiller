@@ -1,7 +1,9 @@
 package tpfinalprogramacion3;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class ArrayGenerico<E>
@@ -27,8 +29,12 @@ public class ArrayGenerico<E>
     {
         list.add(objeto);
     }
-    
-    public int buscarDentroDeLista (E buscar) ///devuelve -1 si no lo encuentra, si no su posicion dentro de la lista
+    /**
+     * Recorre la lista y compara con el elemento recibido en parámetro.
+     * @param buscar
+     * @return -1 si no lo encuentra
+     */
+    public int buscarDentroDeLista (E buscar)
     {
         int control = -1;
         int i=0;
@@ -52,13 +58,23 @@ public class ArrayGenerico<E>
         return control;
     }
     
+    /**
+     * Quita un elemento específico dentro del array recibido en parametro
+     * @param lista
+     * @param eliminar 
+     */
     public void quitarElementoDeArray (ArrayGenerico<E> lista,E eliminar)//devuelve false si no se encontro y sino True si se elimino
     { 
         int i = lista.buscarDentroDeLista(eliminar);
         lista.eliminar(i);   
     }
     
-    public int eliminar (int posicion) //elimina el elemento indicado y devuelve -1 si no se borro
+    /**
+     * Elimina un elemento de la lista
+     * @param posicion
+     * @return 
+     */
+    public int eliminar (int posicion) 
     {
        
         if(posicion != -1)
@@ -69,7 +85,12 @@ public class ArrayGenerico<E>
         return posicion;
     }
     
-    public void reemplazar (E objeto, int i) ///reemplaza un elemento de la lista por otro
+    /**
+     * Reemplaza un elemento de la lista por otro
+     * @param objeto
+     * @param i 
+     */
+    public void reemplazar (E objeto, int i) 
     {
         list.set(i, objeto);
     }
@@ -92,7 +113,6 @@ public class ArrayGenerico<E>
             writer = new ObjectOutputStream(output);
 
             writer.writeObject(escribir);
-
             output.close();
             writer.close();    
         }
@@ -136,37 +156,36 @@ public class ArrayGenerico<E>
     {
         try
         {
-            File file = new File(archivo);
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-            arrayG = new ArrayList<E>();
             Gson gson = new Gson();
-            gson.toJson(arrayG, Vuelo.class, bufferedWriter);
+            String cadenaJson = gson.toJson(arrayG);
+            FileWriter fileWriter = new FileWriter(archivo, true);
+            fileWriter.write(cadenaJson);
+            fileWriter.close();
         }
         catch(Exception e)
         {
             System.out.println(e); 
-        }  
+        }
     }
     
-    
-   
-    
-    
-    public ArrayList<E> leerArchivoGSon (String archivo, ArrayList<E> arrayG)
+    public ArrayList<E> leerArchivoGSon (String nombreArchivo)
     {
+        ArrayList<E> listaUsuarios = new ArrayList<E>();
+        Type type = new TypeToken<ArrayList<E>>(){}.getType();
+        
         try
         {
-            File file = new File(archivo);
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            File file = new File(nombreArchivo);
             Gson gson = new Gson();
-            arrayG = gson.fromJson(bufferedReader, ArrayList.class);
-            System.out.println(arrayG);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            listaUsuarios = gson.fromJson(bufferedReader, type);
         }
         catch(Exception e)
         {
             System.out.println(e); 
         } 
-        
-        return arrayG;
+        System.out.println("sout en leer: "+listaUsuarios.toString());
+
+        return listaUsuarios;
     }
 }

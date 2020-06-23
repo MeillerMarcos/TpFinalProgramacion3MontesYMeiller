@@ -3,6 +3,7 @@ package tpfinalprogramacion3;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TpFinalProgramacion3 
@@ -62,6 +63,9 @@ public class TpFinalProgramacion3
         int opcion=0;
         int i = 0;
         
+        listaVuelos.setList(listaVuelos.leerArchivo("vuelos.txt"));
+        listaUsuarios.setList(listaUsuarios.leerArchivo("usuarios.txt"));
+        
         refrescarConsola();
         System.out.println("------Menu principal------");
         System.out.println();
@@ -72,15 +76,23 @@ public class TpFinalProgramacion3
         System.out.println("5. Salir");
         System.out.println();
         System.out.print("Opción: ");
-        opcion = scan.nextInt();
-        listaVuelos.setList(listaVuelos.leerArchivo("vuelos.txt"));
-        listaUsuarios.setList(listaUsuarios.leerArchivo("usuarios.txt"));
-        if(opcion<1 || opcion>5)
+        
+        try
+        {
+            opcion = scan.nextInt();
+        }
+        catch (InputMismatchException ex)
         {
             mensajeOpcionInvalida();
             menuPrincipal();
         }
         
+        if(opcion<1 || opcion>5)
+        {
+            mensajeOpcionInvalida();
+            menuPrincipal();
+        } 
+ 
         switch(opcion)
         {
             case 1:
@@ -92,22 +104,21 @@ public class TpFinalProgramacion3
             case 3:
                 listaVuelos.setList(listaVuelos.leerArchivo("vuelos.txt"));
                 refrescarConsola();
-                
+                System.out.println("casi for");
                 for(i=0;i<listaVuelos.getList().size();i++)
                 {
                     if(listaVuelos.getList().get(i).getAvion() instanceof AvionGold)
                     {
-                      System.out.println(listaVuelos.getList().get(i).getFecha()+": Avion Gold");  
+                      System.out.println(listaVuelos.getList().get(i).getFecha().toString()+": Avion Gold");  
                     }
                     if(listaVuelos.getList().get(i).getAvion() instanceof AvionSilver)
                     {
-                      System.out.println(listaVuelos.getList().get(i).getFecha()+": Avion Silver");  
+                      System.out.println(listaVuelos.getList().get(i).getFecha().toString()+": Avion Silver");  
                     }
                     if(listaVuelos.getList().get(i).getAvion() instanceof AvionBronze)
                     {
-                      System.out.println(listaVuelos.getList().get(i).getFecha()+": Avion Bronze");  
+                      System.out.println(listaVuelos.getList().get(i).getFecha().toString()+": Avion Bronze");  
                     }
-                    
                 }
                 System.out.println();
                 System.out.print("Ingrese una tecla para volver");
@@ -116,13 +127,7 @@ public class TpFinalProgramacion3
                 menuPrincipal();
                 break;
             case 4:
-                
-               
                 menuEliminar ();
-                System.out.println("Se cancela el vuelo. ");
-                
-                System.out.println("DateFormatSymbols: "+sdf.format(fecha));
-                System.out.println("fechaDay: "+fecha.getDate());
                 break;
             case 5:
                 System.exit(0);
@@ -139,6 +144,75 @@ public class TpFinalProgramacion3
         System.out.println("4. Cordoba - Montevideo");
         System.out.println("5. Cordoba – Santiago");
         System.out.println("6. Montevideo – Santiago");
+    }
+    
+    public static String mostrarOpcionesOrigenYDestino (String mostrarVuelo, int origenOdestino)
+    {
+        int i = 0;
+        ArrayList <String> lista = new ArrayList<String>();
+        
+        lista.add("BsAs");
+        lista.add("Santiago");
+        lista.add("Montevideo");
+        lista.add("Cordoba");
+        System.out.println();
+        System.out.print("Opción: ");
+        
+        for(i=0; i<lista.size();i++)
+        {
+            if(lista.get(i).equals(mostrarVuelo))
+            {
+                lista.remove(i);  
+            }    
+        }
+        System.out.println();
+        
+        if(origenOdestino==1)
+        {
+            System.out.println("Elija el origen: ");
+        }
+        
+        if(origenOdestino==2)
+        {
+            System.out.println("Elija el destino: ");
+        }
+        
+        for(i=0; i<lista.size();i++)
+        { 
+               System.out.println(i +1 + ". "+ lista.get(i));
+        }
+        
+        i = scan.nextInt();
+               
+        while(i<1 || i>lista.size())
+        {
+            mensajeOpcionInvalida();
+            refrescarConsola();
+            
+            if(origenOdestino==1)
+            {
+                mostrarOpcionesOrigenYDestino(mostrarVuelo, 1);
+            }
+            
+            if(origenOdestino==2)
+            {
+                mostrarOpcionesOrigenYDestino(mostrarVuelo, 2);
+            }
+            System.out.println();
+            System.out.print("Opción: ");
+            i = scan.nextInt();
+        }
+        
+        if(lista.size()==4)
+        { 
+            mostrarVuelo = lista.get(i-1); 
+        }
+        else
+        {
+            mostrarVuelo += " - " + lista.get(i - 1);
+        }
+            
+        return mostrarVuelo;
     }
     
     public static void mostrarOpcionesTipoDeAvion ()
@@ -171,7 +245,10 @@ public class TpFinalProgramacion3
         int i=0;
         int buscarUsuario=0;
         String dni= new String();
-        vuelo.setList(listaVuelos.leerArchivo("vuelos.txt"));
+        
+        listaVuelos.setList(listaVuelos.leerArchivo("vuelos.txt"));
+        System.out.println("listaVuelos: "+listaVuelos.getList().toString());
+        
         if(aviones.isEmpty())
         {
             aviones.add(avionGold);
@@ -189,14 +266,14 @@ public class TpFinalProgramacion3
         System.out.println("Ingrese '0' para cancelar la operacion.");
         System.out.print("Ingrese su DNI: ");
         dni = scan.next();
-         if(dni=="0")
+        
+        if(dni.equals("0"))
         {
             menuPrincipal();
         }
         
         buscarUsuario=usuario.buscarDni(listaUsuarios.getList(), dni);
         
-       
         if(buscarUsuario==-1)
         {
             System.out.println();
@@ -214,44 +291,47 @@ public class TpFinalProgramacion3
         puntosSuspensivos();
         
         refrescarConsola();
+        
         System.out.println("Fecha de vuelo: "+fechaElegida);
         System.out.println();
-        mostrarOpcionesOrigenYDestino(); 
-        System.out.println();
-        System.out.print("Opción: ");
-        opcion = scan.nextInt();
-        
-        while(opcion<1 || opcion>6)
-        {
-            mensajeOpcionInvalida();
-            refrescarConsola();
-            mostrarOpcionesOrigenYDestino(); 
-            System.out.println();
-            System.out.print("Opción: ");
-            opcion = scan.nextInt();
-        }
-        
-        switch(opcion)
-        {
-            case 1:
-                vueloElegido = "BsAs – Cordoba";
-                break;
-            case 2:
-                vueloElegido = "BsAs – Santiago";
-                break;
-            case 3:
-                vueloElegido = "BsAs – Montevideo";
-                break;
-            case 4:
-                vueloElegido = "Cordoba - Montevideo";
-                break;
-            case 5:
-                vueloElegido = "Cordoba – Santiago";
-                break;
-            case 6:
-                vueloElegido = "Montevideo – Santiago";
-                break;
-        }
+        vueloElegido = mostrarOpcionesOrigenYDestino(vueloElegido, 1); 
+        vueloElegido = mostrarOpcionesOrigenYDestino(vueloElegido, 2);
+//        mostrarOpcionesOrigenYDestino(); 
+//        System.out.println();
+//        System.out.print("Opción: ");
+//        opcion = scan.nextInt();
+//        
+//        while(opcion<1 || opcion>6)
+//        {
+//            mensajeOpcionInvalida();
+//            refrescarConsola();
+//            mostrarOpcionesOrigenYDestino(); 
+//            System.out.println();
+//            System.out.print("Opción: ");
+//            opcion = scan.nextInt();
+//        }
+//        
+//        switch(opcion)
+//        {
+//            case 1:
+//                vueloElegido = "BsAs – Cordoba";
+//                break;
+//            case 2:
+//                vueloElegido = "BsAs – Santiago";
+//                break;
+//            case 3:
+//                vueloElegido = "BsAs – Montevideo";
+//                break;
+//            case 4:
+//                vueloElegido = "Cordoba - Montevideo";
+//                break;
+//            case 5:
+//                vueloElegido = "Cordoba – Santiago";
+//                break;
+//            case 6:
+//                vueloElegido = "Montevideo – Santiago";
+//                break;
+//        }
         vuelo.setOrigenDestino(vueloElegido);
         System.out.println();
         System.out.print("Usted ha elegido: '"+vueloElegido+"'");
@@ -393,14 +473,6 @@ public class TpFinalProgramacion3
         {
             for(i=0;i<listaVuelos.getList().size();i++)
             {
-                if(vuelo.getAvion()==listaVuelos.getList().get(i).getAvion())
-                {
-                    System.out.println("es true.");
-                }
-                System.out.println("i: "+i);
-                System.out.println("vueloGetAvion: "+vuelo.getAvion());
-                System.out.println("listaVuelosGetAvion: "+listaVuelos.getList().get(i).getAvion());
-                
                 if(listaVuelos.getList().get(i).controlarFecha(fechaElegida) 
                 && listaVuelos.getList().get(i).controlarTipoDeAvion(vuelo.getAvion(), listaVuelos.getList().get(i).getAvion()))
                 {  
@@ -427,8 +499,10 @@ public class TpFinalProgramacion3
         {
             case 1:
                 listaVuelos.getList().add(vuelo);
-                System.out.println(listaVuelos.getList().size());
                 listaVuelos.escribirArchivo("vuelos.txt", listaVuelos.getList());
+                
+                System.out.println("listaVuelos: "+listaVuelos.getList().toString());
+                
                 System.out.println();
                 System.out.print("Vuelo confirmado");
                 puntosSuspensivos();
@@ -448,8 +522,7 @@ public class TpFinalProgramacion3
         int buscarUsuario=0;
         int dni=0;
         
-        usuario.setListaUsuario(usuario.leerArchivo("usuarios.txt"));
-        
+        listaUsuarios.setList(listaUsuarios.leerArchivoGSon("usuariosGSON.json"));
         refrescarConsola();
         System.out.println("------Menu de usuarios------");
         System.out.println();
@@ -493,9 +566,11 @@ public class TpFinalProgramacion3
                 System.out.println();
                 System.out.print("Ingrese su edad: ");
                 usuario.setEdad(scan.nextInt());
-                usuario.getListaUsuario().add(usuario);
-                listaUsuarios.agregarAlista(usuario);
-                listaUsuarios.escribirArchivo("usuarios.txt", usuario.getListaUsuario());
+  
+                listaUsuarios.getList().add(usuario);
+                listaUsuarios.escribirArchivoGSon("usuariosGSON.json", listaUsuarios.getList());
+//                listaUsuarios.escribirArchivo("usuarios.txt", listaUsuarios.getList());
+                
                 System.out.println();
                 System.out.print("Usuario cargado con exito");
                 puntosSuspensivos();
@@ -503,11 +578,12 @@ public class TpFinalProgramacion3
                 break;
             case 2:
                 refrescarConsola();
-                listaUsuarios.setList(listaUsuarios.leerArchivo("usuarios.txt"));
+//                listaUsuarios.setList(usuario.leerArchivo("usuarios.txt"));
                 
-                if(!usuario.getListaUsuario().isEmpty())
+                if(!listaUsuarios.getList().isEmpty())
                 {
-                    for(i=0;i<usuario.getListaUsuario().size();i++)
+                    
+                    for(i=0;i<listaUsuarios.getList().size();i++)
                     {
                         System.out.println("-------------"+(i+1)+"-------------");
                         System.out.println("Nombre: "+listaUsuarios.getList().get(i).getNombre());
@@ -603,6 +679,7 @@ public class TpFinalProgramacion3
     
     public static String ingresarFecha ()
     {
+        Scanner scan = new Scanner(System.in);
         String fecha = new String();
         int limiteDia=0;
         int dia=0;
@@ -610,8 +687,8 @@ public class TpFinalProgramacion3
         int anio=0;
 
         System.out.println("\nFecha de vuelo:__/__/__");
-        System.out.println("\nIngrese '0' para cancelar la operacion.");
-        System.out.print("Ingrese el anio: ");
+        System.out.println("\nIngrese el anio: ");
+        System.out.println("Ingrese '0' para cancelar la operacion");
         anio = scan.nextInt();
         
         if(anio==0)
@@ -627,8 +704,8 @@ public class TpFinalProgramacion3
             puntosSuspensivos();
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/__/__");
-            System.out.println("\nIngrese '0' para cancelar la operacion.");
-            System.out.print("Ingrese el anio: ");
+            System.out.println("\nIngrese el anio: ");
+            System.out.println("Ingrese '0' para cancelar la operacion"); 
             anio = scan.nextInt();
             
             if(anio==0)
@@ -639,8 +716,8 @@ public class TpFinalProgramacion3
         refrescarConsola();
 
         System.out.println("\nFecha de vuelo:__/__/"+anio);
-        System.out.println("\nIngrese '0' para cancelar la operacion.");
-        System.out.print("Ingrese el mes: ");
+        System.out.println("\nIngrese el mes: ");
+        System.out.println("Ingrese '0' para cancelar la operacion");
         mes = scan.nextInt();
         
         if(mes==0)
@@ -656,8 +733,8 @@ public class TpFinalProgramacion3
             puntosSuspensivos();
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/__/"+anio);
-            System.out.println("\nIngrese '0' para cancelar la operacion.");
-            System.out.print("Ingrese el mes: ");
+            System.out.println("\nIngrese el mes: ");
+            System.out.println("Ingrese '0' para cancelar la operacion");
             mes = scan.nextInt();
             
             if(mes==0)
@@ -708,8 +785,8 @@ public class TpFinalProgramacion3
         refrescarConsola();
 
         System.out.println("\nFecha de vuelo:__/"+mes+"/"+anio+"/");
-        System.out.println("\nIngrese '0' para cancelar la operacion.");
-        System.out.print("Ingrese el dia: ");
+        System.out.println("\nIngrese el dia: ");
+        System.out.println("Ingrese '0' para cancelar la operacion");
         dia = scan.nextInt(); 
         
         if(dia==0)
@@ -721,12 +798,13 @@ public class TpFinalProgramacion3
         {
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/"+mes+"/"+anio+"/");
-            System.out.println("\nEl dia puede variar de 1 a "+limiteDia+".");
+            System.out.println("\nEl dia puede variar de 1 a %d."+limiteDia);
             puntosSuspensivos();
             refrescarConsola();
             System.out.println("\nFecha de vuelo:__/"+mes+"/"+anio+"/");
-            System.out.println("\nIngrese '0' para cancelar la operacion.");
-            System.out.print("Ingrese el dia: ");
+            System.out.println("\nIngrese el dia: ");
+            System.out.println("Ingrese '0' para cancelar la operacion");
+            
             dia = scan.nextInt();
             
             if(dia==0)
@@ -735,7 +813,7 @@ public class TpFinalProgramacion3
             }
         }
 
-        fecha = dia+"/"+mes+"/"+anio;
+        fecha = dia+"/"+mes+"/"+anio+"/";
         
         return fecha;
     }
@@ -769,10 +847,11 @@ public class TpFinalProgramacion3
                posicion.add(i);
             }
         }
-        System.out.println("eliga cual desea eliminar");
+        System.out.println("Eliga cual desea eliminar: ");
+        System.out.println();
         for(i = 0; i<posicion.size(); i++)
         {
-            System.out.println("Opcion : " + (i+1) + " " + listaVuelos.getList().get(posicion.get(i)).getFecha());
+            System.out.println("Opcion: " + (i+1) + " " + listaVuelos.getList().get(posicion.get(i)).getFecha());
         }
         i = scan.nextInt();
         i--;
@@ -781,7 +860,5 @@ public class TpFinalProgramacion3
         listaVuelos.escribirArchivo("vuelos.txt", listaVuelos.getList());
         puntosSuspensivos();
         menuPrincipal();
-        
     }
-    
 }

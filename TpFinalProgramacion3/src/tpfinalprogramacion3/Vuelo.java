@@ -127,7 +127,6 @@ public class Vuelo implements Serializable
         
         if(this.fecha.equals(fecha))
         {
-           
             flag = true;   
         }
         
@@ -154,9 +153,15 @@ public class Vuelo implements Serializable
         distanciasOrigenDestino.put("BsAs – Cordoba", 695);
         distanciasOrigenDestino.put("BsAs – Santiago", 1400);
         distanciasOrigenDestino.put("BsAs – Montevideo", 950);
-        distanciasOrigenDestino.put("Cordoba - Montevideo", 1190);
         distanciasOrigenDestino.put("Cordoba – Santiago", 1050);
+        distanciasOrigenDestino.put("Cordoba - Montevideo", 1190);
+        distanciasOrigenDestino.put("Cordoba - BsAs", 695);
+        distanciasOrigenDestino.put("Montevideo – Cordoba", 1190);
         distanciasOrigenDestino.put("Montevideo – Santiago", 2100); 
+        distanciasOrigenDestino.put("Montevideo – BsAs", 950);
+        distanciasOrigenDestino.put("Santiago – Cordoba", 1050);
+        distanciasOrigenDestino.put("Santiago – Montevideo", 2100);
+        distanciasOrigenDestino.put("Santiago – BsAs", 1400);
     }
     
     public void calcularTotal(String key)
@@ -255,4 +260,13 @@ public class Vuelo implements Serializable
         
         return vuelo;
     }
+
+    @Override
+    public String toString() 
+    {
+        return "---Vuelo---" + "  origenDestino:" + origenDestino + "  fecha:" + fecha + "  cantidadAcompañantes:" + cantidadAcompañantes + "  avion:" + avion + "  costoTotal:" 
+        + costoTotal + "  distanciasOrigenDestino:" + distanciasOrigenDestino + "  usuario:" + usuario + " ---";
+    }
+    
+    
 }
